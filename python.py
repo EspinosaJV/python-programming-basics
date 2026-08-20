@@ -1,419 +1,253 @@
-# build a contact list - DONE
-# make a way to add new contacts to the list - DONE
-# make a way to remove contacts in the list - DONE
-# make a way to update contacts in the list
-# make a way to view all of the contacts in a list - DONE
-# make a way to view specific contacts in a list - DONE
+# SHOPPING RECEIPT CALCULATOR PROJECT
 
-# This is the contacts dictionary containing all of the different contacts and their metadata (phone, email, and age)
-contacts = {
-    "JV": {"phone": "123-456-7890", "email": "jvtestemail@gmail.com", "age": 23},
-    "Jem": {"phone": "234-567-8901", "email": "jemtestemail@gmail.com", "age": 24},
-    "Snow": {"phone": "345-678-9012", "email": "snowtestemail@gmail.com", "age": 1},
-    "Dalmy": {"phone": "456-789-0123", "email": "dalmytestemail@gmail.com", "age": 7}
-}
+# 1. Prompt the user for the item name (string) - Done
+# 2. Prompt the user for the price of the item (string) - Done
+# 3. Prompt the user for the quantity of the item (string) - Done
+# 4. Calculate the subtotal - price * quantity and add all - Done
+# 5. Add 12% tax - subtotal * 0.12 then add to subtotal - Done
+# 6. Prompt the user how much the customer has paid - Done
+# 7. Calculate the change - Done
+# 8. Print a receipt
 
+receipt_contents = dict()
 
-def add_contact(contacts: dict):
+def prompt_item_name(receipt_contents: dict):
     """
-    This method handles the addition of a new contact in the contact book dictionary
+    Prompt the user to input the specific item names in the receipt itself wherein these item names will become the keys of the receipt_contents dictionary
 
     Args:
-        1. contacts - variable that contains the contact book dictionary
+        - receipt_contents = dictionary containing the items of the receipt
     Returns:
-        Nothing - only performs the addition operation into the contact book dictionary
+        - None, only performs the appending of the items as keys to the receipt_contents dictionary
     """
-    print("You have chosen to add a new contact.")
 
-    # This section contains the initialized while loop variables for user input & validation
-    adding_contact = True
-    contact_name_input = ""
-    contact_phone_number_input = ""
-    contact_email_address_input = ""
-    contact_age_input = 0
+    # This section handles the loop prompting of the user to input all the items that needs to be included in the receipt
+    user_input = True
 
-    # This section handles the prompting of the user to input new contact name & validation
-    while(adding_contact):
-        user_input = input("What is the name of the contact you'd like to add? ")
+    while(user_input):
+        user_input = input("What is the name of the item you want to include in the receipt? Input X to stop adding anymore items. ")
 
-        # This section handles the instance that the contact name already exists in the contact book dictionary
-        if user_input in contacts.keys():
-            user_input = input("This name already exists in the contact book - would you like to re-add or exit? Input Y to exit, otherwise, enter any key ")
+        if user_input == "X":
+            print("Stopping the addition of anymore items into the receipt.")
+            user_input = False
+            break
+        else:
+            receipt_contents[user_input] = None
 
-            if user_input == "Y":
-                print("Exiting out of adding a contact")
-                adding_contact = False
-                break
-            else:
-                continue
+    # This section handles the display of the items that are in the receipt_contents dictionary
 
-        print(f"Adding {user_input} as new contact name to the contact book.")
-        contact_name_input = user_input
-        break
+    print("Here are the items to be contained in the outputted receipt: ")
 
+    for item in receipt_contents.keys():
+        print(item)
 
-    # This section handles the prompt of the user to input new phone number & validation
-    while(adding_contact):
-        user_input = input("What is the phone number of the contact you'd like to add? ")
-
-        # This section handles the instance that the phone number already exists in the contact book dictionary
-        for contact in contacts.values():
-            if contact["phone"] == user_input:
-                user_input = input("This phone number already exists in the contact book - would you like to re-add or exit? Input Y to exit, otherwise, enter any key ")
-
-                if user_input == "Y":
-                    print("Exiting out of adding a contact")
-                    adding_contact = False
-                    break
-                else:
-                    user_input = False
-                    continue
-
-        if not user_input: continue
-
-        print(f"Adding {user_input} as the new phone number to the contact {contact_name_input}")
-        contact_phone_number_input = user_input
-        break
-
-    # This section handles the prompt of the user to input new email address & validation
-    while(adding_contact):
-        user_input = input("What is the email address of the contact you'd like to add? ")
-
-        # This section handles the instance that the email address already exists in the contact book dictionary
-        for contact in contacts.values():
-            if contact["email"] == user_input:
-                user_input = input("This email address already exists in the contact book - would you like to re-add or exit? Input Y to exit, otherwise, enter any key ")
-
-                if user_input == "Y":
-                    print("Exiting out of adding a contact")
-                    adding_contact = False
-                    break
-                else:
-                    user_input = False
-                    continue
-
-        if not user_input: continue
-
-        print(f"Adding {user_input} as the new email address to the contact {contact_name_input}")
-        contact_email_address_input = user_input
-        break
-
-    # This section handles the prompting of the user to input age & validation
-    while(adding_contact):
-
-        # This section handles the instance that the age input is invalid
-        try:
-            user_input = int(input("What is the age of the contact you'd like to add? "))
-        except:
-            user_input = input("The age value that you entered is invalid - would you like to re-add or exit? Input Y to exit, otherwise, enter any key ")
-
-            if user_input == "Y":
-                print("Exiting out of adding a contact")
-                adding_contact = False
-                break
-            else:
-                continue
-
-        print(f"Adding {user_input} as the age for the new contact {contact_name_input}")
-        contact_age_input = user_input
-        break
-
-    print(f"So the contact you are going to be adding is {contact_name_input} wherein this contacts phone number is {contact_phone_number_input}, this contacts email address is {contact_email_address_input}, and this contacts age is {contact_age_input}")
-
-def remove_contact(contacts: dict):
+def prompt_item_price(receipt_contents: dict):
     """
-    This method handles the removal of an existent contact in the contact book dictionary
+    Prompt the user to input the specific item prices of the items in the receipt itself wherein these item prices will become the individual prices of each item in the receipt_contents dictionary
 
     Args:
-        1. contacts - variable that contains the contact book dictionary
+        - receipt_contents = dictionary containing the items of the receipt
     Returns:
-        Nothing - only performs the removal operation from the contact book dictionary
+        - None, only performs the appending of the individual prices of the items to the receipt_contents dictionary
     """
-    print("You have chosen to remove a contact")
 
-    # This section displays the current dictionary to the user
-    print("="*60)
-    print("Your current contacts are:")
+    # This section handles the loop prompting the user to input the individual prices of the items that needs to be included in the receipt
 
-    counter = 1
-    removing_contact = True
-    contact_remove_input = ""
+    for item in receipt_contents.keys():
+        user_input = float(input(f"For the item {item}, what is it's individual price? "))
 
-    for contact_name in contacts.keys():
-        print(f"{counter}. {contact_name}")
-        counter += 1
+        receipt_contents[item] = {"price": user_input}
 
-    # This section handles the prompting of the user to remove an existing contact & validation
-    while(removing_contact):
-        user_input = input("What is the name of the existing contact you'd like to remove from your contacts? ")
+    # This section handles the display of the items with their corresponding individual prices
 
-        if user_input not in contacts.keys():
-            user_input = input("This contact name does not exist in the contact book - would you like to re-input or exit? Input Y to exit, otherwise, enter any key ")
+    for item in receipt_contents.keys():
+        print(f"For the item {item}, its price is {receipt_contents[item]["price"]}")
 
-            if user_input == "Y":
-                print("Exiting out of removing a contact")
-                removing_contact = False
-                break
-            else:
-                continue
-
-        print(f"Removing {user_input} as the contact to remove from the contact book.")
-        contact_remove_input = user_input
-        break
-
-    # This section handles the actual contact removal logic
-    del contacts[contact_remove_input]
-
-    print(f"Contact {contact_remove_input} has just been removed from your contacts list.")
-
-    print(f"Your new contacts list is: ")
-
-    counter = 1
-    for contact_name in contacts.keys():
-        print(f"{counter}. {contact_name}")
-        counter += 1
-
-def update_contact(contacts: dict):
+def prompt_item_qty(receipt_contents: dict):
     """
-    This method handles the updating of an existing contact in the contact book dictionary
+    Prompt the user to input the item quantities of the items in the receipt wherein these quantity values will determine how many of each item is to be calculated with the price for the receipt subtotal & total
 
     Args:
-        1. contacts - variable that contains the contact book dictionary
+        - receipt_contents = dictionary containing the items of the receipt
     Returns:
-        Nothing - only performs updating a specific contact operation from the contact book dictionary
+        - None, only performs the appending of the quantity values to the items in the receipt_contents dictionary
     """
 
-    # This section displays the entire contacts dictionary to the user
-    print("="*60)
-    print("You have chosen to update a contact")
+    # This section handles the loop prompting of the user ot input the respective quantity values of all the items that needs to be included in the receipt
 
-    counter = 1
-    for contact_name in contacts.keys():
-        print(f"{counter}. {contact_name}")
-        counter += 1
+    for item in receipt_contents.keys():
+        user_input = int(input(f"For the item {item}, what is the quantity value? "))
 
-    # This section contains the initialized variables for user input & validation
-    updating_contact = True
-    contact_name_input = ""
-    contact_detail_input = ""
+        receipt_contents[item]["quantity"] = user_input
 
-    # This section handles the prompting of the user to update the contact information of a specific contact & validation
-    while(updating_contact):
-        user_input = input("What is the name of the contact you'd like to update? ")
-
-        # This section handles the instance that the contact name does not exist in the contact book dictionary
-        if user_input not in contacts.keys():
-            user_input = input("This contact name does not exist in the contact book - would you like to re-input or exit? Input Y to exit, otherwise, enter any key ")
-
-            if user_input == "Y":
-                print("Exiting out of updating a contact")
-                updating_contact = False
-                break
-            else:
-                continue
-
-        print(f"Updating the details of {user_input} from your contacts.")
-        contact_name_input = user_input
-        break
-
-    # This section handles the prompting of the user as to which contact detail to update & validation
-    while(updating_contact):
-        user_input = input("Which contact detail would you like to update? (phone, email, age) ")
-
-        # This section handles the instance that the chosen detail to update does not exist in the contact book dictionary
-        if user_input not in contacts[contact_name_input].keys():
-            user_input = input("This contact detail does not exist in the contact book - would you like to re-input or exit? Input Y to exit, otherwise, enter any key ")
-
-            if user_input == "Y":
-                print("Exiting out of updating a contact")
-                updating_contact = False
-                break
-            else:
-                continue
-
-        print(f"Updating the {user_input} of {contact_name_input}")
-        contact_detail_input = user_input
-        break
-
-    # This section handles the actual contact updating logic
+    # This section handles the display of the items with their corresponding individual quantity values
     
-    # This section handles the prompting of the user to input the new phone number & validation
-    while(updating_contact and contact_detail_input == "phone"):
-        user_input = input("What is the phone number of the contact you'd like to add? ")
+    for item in receipt_contents.keys():
+        print(f"For the item {item}, its quantity value is {receipt_contents[item]["quantity"]}")
 
-        # This section handles the instance that the phone number already exists in the contact book dictionary
-        for contact in contacts.values():
-            if contact["phone"] == user_input:
-                user_input = input("This phone number already exists in the contact book - would you like to re-add or exit? Input Y to exit, otherwise, enter any key ")
-
-                if user_input == "Y":
-                    print("Exiting out of adding a contact")
-                    adding_contact = False
-                    break
-                else:
-                    user_input = False
-                    continue
-
-        if not user_input: continue
-
-        print(f"Updating {user_input} as the new phone number to the contact {contact_name_input}")
-        contacts[contact_name_input][contact_detail_input] = user_input
-        break
-
-    # This section handles the prompting of the user to input the new email address & validation
-    while(updating_contact and contact_detail_input == "email"):
-        user_input = input("What is the email address of the contact you'd like to add? ")
-
-        # This section handles the instance that the email address already exists in the contact book dictionary
-        for contact in contacts[contact_name_input].values():
-            if contact["email"] == user_input:
-                user_input = input("This email address already exists in the contact book - would you like to re-add or exit? Input Y to exit, otherwise, enter any key ")
-
-                if user_input == "Y":
-                    print("Exiting out of updating a contact")
-                    updating_contact = False
-                    break
-                else:
-                    user_input = False
-                    continue
-
-        if not user_input: continue
-
-        print(f"Updating {user_input} as the new email address to the contact {contact_name_input}")
-        contacts[contact_name_input][contact_detail_input] = user_input
-        break
-
-    # This section handles the prompting of the user to input the new age & validation
-    while(updating_contact and contact_detail_input == "age"):
-
-        # This section handles the instance that the age input is invalid
-        try:
-            user_input = int(input("What is the age of the contact you'd like to update it to? "))
-        except:
-            user_input = input("The age value that you entered is invalid - would you like to re-add or exit? Input Y to exit, otherwise, enter any key ")
-
-            if user_input == "Y":
-                print("Exiting out of updating a contact")
-                updating_contact = False
-                break
-            else:
-                continue
-
-        print(f"Updating {user_input} as the new age to the contact {contact_name_input}")
-        contacts[contact_name_input][contact_detail_input] = user_input
-        break
-
-def view_all_contacts(contacts: dict):
+def calculate_subtotal(receipt_contents: dict):
     """
-    This method handles the viewing of all of the contacts in the contact book dictionary
+    This function handles the calculation of the subtotal given the items in the dictionary.
 
     Args:
-        1. contacts - variable that contains the contact book dictionary
+        - receipt_contents = dictionary containing the items of the receipt and their corresponding price & quantity values
     Returns:
-        Nothing - only performs the view all contacts in the contact book dictionary operation
+        - calculated subtotal value
     """
 
-    # This section handles the displaying of all the current contacts in the contact book dictionary
+    # This section handles the calculation of the subtotal for all of the items in the receipt
 
-    print("="*60)
-    print("You have chosen to view all of the contacts in your contact book.")
+    calculated_subtotal = 0.0
+    item_totals = []
+    running_total = 0
 
-    counter = 1
+    # This section handles the calculation of the total prices of the individual items and adds them to the item totals list for summation
 
-    for contact_name in contacts.keys():
-        print(f"{counter}. {contact_name}")
-        counter += 1
+    for item in receipt_contents.keys():
+        current_item_price = 0.0
+        current_item_qty = 0
+        current_item_total = 0.0
 
-def view_contact(contacts:dict):
+        # Acquires the price & quantity of current item in the iteration
+        current_item_price = float(receipt_contents[item]["price"])
+        current_item_qty = int(receipt_contents[item]["quantity"])
+
+        # Calculates the current item's total given its price & quantity
+        current_item_total = current_item_price * current_item_qty
+
+        # Appends the current item total to the item totals list
+        item_totals.append(current_item_total)
+
+    # This section handles the summation of the item totals list to then output the subtotal value
+    running_total = 0
+
+    for total in item_totals:
+        running_total += total
+
+    return running_total
+
+def calculate_total(receipt_contents: dict, subtotal: float):
     """
-    This method handles the viewing of only a specific contact in the contact book dictionary
+    This function handles the calculation of the total given the subtotal value and the tax value
 
     Args:
-        1. contacts - variable that contains the contact book dictionary
+        - receipt_contents = dictionary containing the items of the receipt and their corresponding price & quantity values
+        - subtotal = float value which is the subtotal before tax
     Returns:
-        Nothing - only performs the view specific contact in the contact book dictionary operations
+        - total = float value which is the subtotal after tax
     """
 
-    print("="*60)
-    print("You have chosen to view the details of a specific contact in your contact book.")
+    # This section handles the calculation of the total for all of the items in the receipt
+    calculated_tax = subtotal * 0.12
+    calculated_total = subtotal + calculated_tax
 
-    counter = 1
-    for contact_name in contacts.keys():
-        print(f"{counter}. {contact_name}")
-        counter += 1
+    return calculated_total
 
-    # This section contains the initialized variables for user input & validation
-    viewing_contact = True
-    contact_name_input = ""
-    
-    # This section handles the prompting of the user to display the contact information of a specific contact & validation
-    while(viewing_contact):
-        user_input = input("What is the name of the contact you'd like to view? ")
+def prompt_customer_payment():
+    """
+    This function prompts the user to input how much the customer has paid.
 
-        # This section handles the instance that the contact name does not exist in the contact book dictionary
-        if user_input not in contacts.keys():
-            user_input = input("This contact name does not exist in the contact book - would you like to re-input or exit? Input Y to exit, otherwise, enter any key ")
+    Args:
+        - None
+    Returns:
+        - customer_payment = float value representing how much the customer has paid
+    """
 
-            if user_input == "Y":
-                print("Exiting out of viewing a contact")
-                viewing_contact = False
-                break
-            else:
-                continue
+    # This section handles the prompting of the user for how much the customer has paid
+    customer_payment = float(input("How much has the customer paid for this receipt? "))
 
-        print(f"Viewing the details of {user_input} from your contacts.")
-        contact_name_input = user_input
-        break
+    return customer_payment
 
-    # This section handles the actual contact viewing logic
+def calculate_customer_change(customer_payment: float, receipt_total: float):
+    """
+    This function handles the calculation of the customer's change.
 
-    print(f"The contact name is {contact_name_input}")
-    print(f"The contact phone number is {contacts[contact_name_input]["phone"]}")
-    print(f"The contact email address is {contacts[contact_name_input]["email"]}")
-    print(f"The contact age is {contacts[contact_name_input]["age"]}")
+    Args:
+        - customer_payment = float value representing the amount the customer has paid
+        - receipt_total = float value representing the total amount of the receipt
+    Returns:
+        - customer_change = float value representing how much customer should receive as change
+    """
 
-is_continue = True
+    # This section handles the calculation of the change that must be given to the customer after customer payment & receipt total
 
-# This is the start of the program itself which prompts the user to choose from existing options
+    customer_change = customer_payment - receipt_total
+
+    return customer_change
+
+def display_customer_receipt(receipt_contents: dict, receipt_subtotal: float, receipt_total: float, customer_payment: float, customer_change: float):
+    """
+    This function handles the display of the customers entire receipt
+
+    Args:
+        - receipt_contents = dictionary containing all of the items with their price & quantities
+        - receipt_subtotal = float value representing the total price before tax
+        - receipt_total = float value representing the total price after tax
+        - customer_payment = float value representing the amount customer has given
+        - customer_change = float value representing the amount that must be given back to the customer as change
+
+    Returns:
+        - None
+    """
+
+    # This section handles the display of the items in the receipt with their price & quantities
+    for item in receipt_contents.keys():
+        print(f"{item}, {receipt_contents[item]["price"], {receipt_contents[item]["quantity"]}}")
+
+    # This section handles the display of the subtotal
+    print(f"Subtotal: {receipt_subtotal}")
+
+    # This section handles the display of the total after tax
+    print("Tax of 12%")
+    print(f"Total: {receipt_total}")
+
+    # This section handles the display of the customer payment
+    print(f"Customer Paid: {customer_payment}")
+
+    # This section handles the display of the customer change
+    print(f"Customer Change: {customer_change}")
+
 print("="*60)
-print("CONTACT BOOK PROGRAM")
+print("Welcome to the Shopping Receipt Calculator program")
+
+# This section handles the prompting of the user for items in receipt
+prompt_item_name(receipt_contents)
+
+# This section handles the prompting of the user for the individual price of the items in the receipt
 print("="*60)
-print("\n")
-print("What would you like to do for today in the Contact Book Program?")
-print("1. Add a New Contact to the Contact Book")
-print("2. Remove an Existing Contact from the Contact Book")
-print("3. Update an Existing Contact in the Contact Book")
-print("4. View All Contacts in the Contact Book")
-print("5. View a Specific Contact in the Contact Book")
+print("Now going to be asking you for the individual price of each of the items in the receipt. ")
+prompt_item_price(receipt_contents)
 
-# This section takes in user input and ensures that the user input is from what are only the possible options
-while(is_continue):
-    user_input = int(input("Please enter your chosen action: "))
+# This section handles the prompting of the user for the quantity of a singular item in the receipt
+print("="*60)
+print("Now going to be asking you for the quantity of each of the items in the receipt. ")
+prompt_item_qty(receipt_contents)
 
-    if user_input not in range(1, 6):
-        print("Please only choose the listed possible actions to choose from")
-        exit()
+# This section handles the calculation of the subtotal of all of the items
+print("="*60)
+print("Now the program is going to be calculating the subtotal of all of the items in the receipt. ")
+receipt_subtotal = calculate_subtotal(receipt_contents)
+print(f"The receipt's subtotal is: ", receipt_subtotal)
 
-    # This section handles the calling of the specific methods for each of the action based on provided user input
-    match user_input:
-        case 1:
-            add_contact(contacts)
-        case 2:
-            remove_contact(contacts)
-        case 3:
-            update_contact(contacts)
-        case 4:
-            view_all_contacts(contacts)
-        case 5:
-            view_contact(contacts)
+# This section handles the calculation & addition of tax to the subtotal
+print("="*60)
+print("Now the program is going to be calculating the total which includes the tax addition in the receipt. ")
+receipt_total = calculate_total(receipt_contents, receipt_subtotal)
+print(f"The receipt's total is: ", receipt_total)
 
-    # This section handles the prompting of the user if they wish to continue using the program
-    user_input = input("Do you wish to exit the program? If yes, please input Y ")
+# This section now handles prompting the user for how much the customer has paid
+print("="*60)
+print("Now the program is going to be asking you for how much the customer has paid. ")
+customer_payment = prompt_customer_payment()
+print(f"The customer has paid {customer_payment}. ")
 
-    if user_input == "Y":
-        is_continue = False
-        print("Thank you for using the program!")
-        exit()
-    else:
-        print("User did not input Y, therefore continuing program")
-        is_continue = True
+# This section now handles the calculation of the change that must be given to the customer
+print("="*60)
+print("Now the program is going to be calculating the change that you must give to the customer.")
+customer_change = calculate_customer_change(customer_payment, receipt_total)
+print(f"The customer's change is {customer_change}.")
+
+# This section now handles the display of the entire receipt itself
+print("="*60)
+print("Now the program is going to be displaying the receipt.")
+display_customer_receipt(receipt_contents, receipt_subtotal, receipt_total, customer_payment, customer_change)
