@@ -1,253 +1,141 @@
-# SHOPPING RECEIPT CALCULATOR PROJECT
+# Make a personal expense tracker where:
+# This tracker allows you to add an expense
+# This tracker allows you to view your expenses
+# This tracker allows you to calculate the total expenses
+# This tracker allows you to show expenses by category
+# Allows you to exit the tracker
 
-# 1. Prompt the user for the item name (string) - Done
-# 2. Prompt the user for the price of the item (string) - Done
-# 3. Prompt the user for the quantity of the item (string) - Done
-# 4. Calculate the subtotal - price * quantity and add all - Done
-# 5. Add 12% tax - subtotal * 0.12 then add to subtotal - Done
-# 6. Prompt the user how much the customer has paid - Done
-# 7. Calculate the change - Done
-# 8. Print a receipt
+# This section displays the greeting message to the user
+print("Welcome to your Personal Expense Tracker!")
+print("="*60)
+print("1. Add Expense")
+print("2. View Expenses")
+print("3. Calculate Total Expenses")
+print("4. Show Expenses by Category")
+print("5. Exit Tracker")
 
-receipt_contents = dict()
+expenses = {}
 
-def prompt_item_name(receipt_contents: dict):
+def add_expense(expenses: dict):
     """
-    Prompt the user to input the specific item names in the receipt itself wherein these item names will become the keys of the receipt_contents dictionary
+    This function handles the addition of a new expense to existing expense list.
 
     Args:
-        - receipt_contents = dictionary containing the items of the receipt
+        1. expenses - dict type parameter representing the dictionary variable expenses.
     Returns:
-        - None, only performs the appending of the items as keys to the receipt_contents dictionary
+        1. None - only performs the appending of a new expense into the expenses dictionary.
     """
+    print("You have chosen to add an expense!")
 
-    # This section handles the loop prompting of the user to input all the items that needs to be included in the receipt
-    user_input = True
+    # This section handles the inputting of the description of the new expense
+    expense_description = input("What is the description of this expense? ")
+    print(f"Description: {expense_description}")
 
-    while(user_input):
-        user_input = input("What is the name of the item you want to include in the receipt? Input X to stop adding anymore items. ")
+    # This section handles the inputting of the category of the new expense
+    expense_category = input("What is the category of this expense? ")
+    print(f"Category: {expense_category}")
 
-        if user_input == "X":
-            print("Stopping the addition of anymore items into the receipt.")
-            user_input = False
+    # This section handles the inputting of the amount of the new expense
+    expense_amount = input("What is the amount of this expense? ")
+    print(f"Amount: {expense_amount}")
+
+    # This section handles the inputting of the new expense to the expenses dictionary & its display
+    expenses[expense_description] = {"Category": expense_category, "Amount": expense_amount}
+
+    print(f"The expense for {expense_description} has just been added!")
+
+def view_expenses(expenses: dict):
+    """
+    This function handles the display of current expenses from the expense list.
+
+    Args:
+        1. expenses - dict type variable containing all of the expenses inputted by the user.
+    Returns:
+        1. None - function only performs the displaying of the expenses to the user - does not return anything.
+    """
+    print("You have chosen to view your current expenses!")
+
+    # This section handles the display of all of the expenses and its corresponding category & amounts from the expenses dictionary
+    for expense in expenses:
+        print(f"Description: {expense}")
+        print(f"Category: {expenses[expense]["Category"]}")
+        print(f"Amount: {expenses[expense]["Amount"]}")
+        print("-"*30)
+
+def calculate_expenses(expenses: dict):
+    """
+    This function calculates the total expenses using the price from the expense list.
+    
+    Args:
+        1. expenses - dict type variable containing all of the expenses inputted by the user.
+    Returns:
+        1. None - function only performs the calculation of the total expense and its display to the user - does not return anything.
+    """
+    print("You have chosen to calculate the total expenses!")
+
+    running_expense_total = 0
+
+    # This section handles the calculation of the total expenses given the added expenses from the expenses dictionary
+    for expense in expenses:
+        current_expense_amount = int(expenses[expense]["Amount"])
+        running_expense_total += current_expense_amount
+
+    print(f"Your total expense so far is {running_expense_total}!")
+
+
+def show_expenses_category(expenses: dict):
+    """
+    This function handles the display of expenses given a category.
+
+    Args:
+        1. expenses - dict type variable containing all of the expenses inputted by the user.
+    Returns:
+        1. None - function only performs the display of all of the different expense categories & the expenses under the chosen expense category
+    """
+    print("You have chosen to show the expenses by category")
+
+    # This section handles the display of all of the different categories of expenses
+    print("Here are the current categories of your expenses so far:")
+
+    expense_counter = 1
+    expense_categories = []
+
+    for expense in expenses:
+        category_to_display = expenses[expense]["Category"]
+
+        if category_to_display not in expense_categories:
+            print(f"{expense_counter}. {category_to_display}")
+            expense_categories.append(category_to_display)
+            expense_counter += 1
+
+    # This section handles prompting the user of what categories' expenses needs to be displayed
+    user_choice = input("Please input the name of the category you would like to see the expenses of ")
+
+    for expense in expenses:
+        if user_choice not in expense_categories:
+            print("Please input a proper category.")
             break
         else:
-            receipt_contents[user_input] = None
+            if (expenses[expense]["Category"] in expense_categories) and (expenses[expense]["Category"] == user_choice):
+                print(f"Description: {expense}")
+                print(f"Category: {expenses[expense]["Category"]}")
+                print(f"Amount: {expenses[expense]["Amount"]}")
+                print("-"*30)        
 
-    # This section handles the display of the items that are in the receipt_contents dictionary
+# This section handles the prompting of user's choice for action
+while(True):
+    user_choice = int(input("What action would you like to do right now? "))
 
-    print("Here are the items to be contained in the outputted receipt: ")
+    match user_choice:
+        case 1:
+            add_expense(expenses)
+        case 2:
+            view_expenses(expenses)
+        case 3:
+            calculate_expenses(expenses)
+        case 4:
+            show_expenses_category(expenses)
+        case 5:
+            print("You have chosen to exit your personal expenses tracker, goodbye!")
+            exit()
 
-    for item in receipt_contents.keys():
-        print(item)
-
-def prompt_item_price(receipt_contents: dict):
-    """
-    Prompt the user to input the specific item prices of the items in the receipt itself wherein these item prices will become the individual prices of each item in the receipt_contents dictionary
-
-    Args:
-        - receipt_contents = dictionary containing the items of the receipt
-    Returns:
-        - None, only performs the appending of the individual prices of the items to the receipt_contents dictionary
-    """
-
-    # This section handles the loop prompting the user to input the individual prices of the items that needs to be included in the receipt
-
-    for item in receipt_contents.keys():
-        user_input = float(input(f"For the item {item}, what is it's individual price? "))
-
-        receipt_contents[item] = {"price": user_input}
-
-    # This section handles the display of the items with their corresponding individual prices
-
-    for item in receipt_contents.keys():
-        print(f"For the item {item}, its price is {receipt_contents[item]["price"]}")
-
-def prompt_item_qty(receipt_contents: dict):
-    """
-    Prompt the user to input the item quantities of the items in the receipt wherein these quantity values will determine how many of each item is to be calculated with the price for the receipt subtotal & total
-
-    Args:
-        - receipt_contents = dictionary containing the items of the receipt
-    Returns:
-        - None, only performs the appending of the quantity values to the items in the receipt_contents dictionary
-    """
-
-    # This section handles the loop prompting of the user ot input the respective quantity values of all the items that needs to be included in the receipt
-
-    for item in receipt_contents.keys():
-        user_input = int(input(f"For the item {item}, what is the quantity value? "))
-
-        receipt_contents[item]["quantity"] = user_input
-
-    # This section handles the display of the items with their corresponding individual quantity values
-    
-    for item in receipt_contents.keys():
-        print(f"For the item {item}, its quantity value is {receipt_contents[item]["quantity"]}")
-
-def calculate_subtotal(receipt_contents: dict):
-    """
-    This function handles the calculation of the subtotal given the items in the dictionary.
-
-    Args:
-        - receipt_contents = dictionary containing the items of the receipt and their corresponding price & quantity values
-    Returns:
-        - calculated subtotal value
-    """
-
-    # This section handles the calculation of the subtotal for all of the items in the receipt
-
-    calculated_subtotal = 0.0
-    item_totals = []
-    running_total = 0
-
-    # This section handles the calculation of the total prices of the individual items and adds them to the item totals list for summation
-
-    for item in receipt_contents.keys():
-        current_item_price = 0.0
-        current_item_qty = 0
-        current_item_total = 0.0
-
-        # Acquires the price & quantity of current item in the iteration
-        current_item_price = float(receipt_contents[item]["price"])
-        current_item_qty = int(receipt_contents[item]["quantity"])
-
-        # Calculates the current item's total given its price & quantity
-        current_item_total = current_item_price * current_item_qty
-
-        # Appends the current item total to the item totals list
-        item_totals.append(current_item_total)
-
-    # This section handles the summation of the item totals list to then output the subtotal value
-    running_total = 0
-
-    for total in item_totals:
-        running_total += total
-
-    return running_total
-
-def calculate_total(receipt_contents: dict, subtotal: float):
-    """
-    This function handles the calculation of the total given the subtotal value and the tax value
-
-    Args:
-        - receipt_contents = dictionary containing the items of the receipt and their corresponding price & quantity values
-        - subtotal = float value which is the subtotal before tax
-    Returns:
-        - total = float value which is the subtotal after tax
-    """
-
-    # This section handles the calculation of the total for all of the items in the receipt
-    calculated_tax = subtotal * 0.12
-    calculated_total = subtotal + calculated_tax
-
-    return calculated_total
-
-def prompt_customer_payment():
-    """
-    This function prompts the user to input how much the customer has paid.
-
-    Args:
-        - None
-    Returns:
-        - customer_payment = float value representing how much the customer has paid
-    """
-
-    # This section handles the prompting of the user for how much the customer has paid
-    customer_payment = float(input("How much has the customer paid for this receipt? "))
-
-    return customer_payment
-
-def calculate_customer_change(customer_payment: float, receipt_total: float):
-    """
-    This function handles the calculation of the customer's change.
-
-    Args:
-        - customer_payment = float value representing the amount the customer has paid
-        - receipt_total = float value representing the total amount of the receipt
-    Returns:
-        - customer_change = float value representing how much customer should receive as change
-    """
-
-    # This section handles the calculation of the change that must be given to the customer after customer payment & receipt total
-
-    customer_change = customer_payment - receipt_total
-
-    return customer_change
-
-def display_customer_receipt(receipt_contents: dict, receipt_subtotal: float, receipt_total: float, customer_payment: float, customer_change: float):
-    """
-    This function handles the display of the customers entire receipt
-
-    Args:
-        - receipt_contents = dictionary containing all of the items with their price & quantities
-        - receipt_subtotal = float value representing the total price before tax
-        - receipt_total = float value representing the total price after tax
-        - customer_payment = float value representing the amount customer has given
-        - customer_change = float value representing the amount that must be given back to the customer as change
-
-    Returns:
-        - None
-    """
-
-    # This section handles the display of the items in the receipt with their price & quantities
-    for item in receipt_contents.keys():
-        print(f"{item}, {receipt_contents[item]["price"], {receipt_contents[item]["quantity"]}}")
-
-    # This section handles the display of the subtotal
-    print(f"Subtotal: {receipt_subtotal}")
-
-    # This section handles the display of the total after tax
-    print("Tax of 12%")
-    print(f"Total: {receipt_total}")
-
-    # This section handles the display of the customer payment
-    print(f"Customer Paid: {customer_payment}")
-
-    # This section handles the display of the customer change
-    print(f"Customer Change: {customer_change}")
-
-print("="*60)
-print("Welcome to the Shopping Receipt Calculator program")
-
-# This section handles the prompting of the user for items in receipt
-prompt_item_name(receipt_contents)
-
-# This section handles the prompting of the user for the individual price of the items in the receipt
-print("="*60)
-print("Now going to be asking you for the individual price of each of the items in the receipt. ")
-prompt_item_price(receipt_contents)
-
-# This section handles the prompting of the user for the quantity of a singular item in the receipt
-print("="*60)
-print("Now going to be asking you for the quantity of each of the items in the receipt. ")
-prompt_item_qty(receipt_contents)
-
-# This section handles the calculation of the subtotal of all of the items
-print("="*60)
-print("Now the program is going to be calculating the subtotal of all of the items in the receipt. ")
-receipt_subtotal = calculate_subtotal(receipt_contents)
-print(f"The receipt's subtotal is: ", receipt_subtotal)
-
-# This section handles the calculation & addition of tax to the subtotal
-print("="*60)
-print("Now the program is going to be calculating the total which includes the tax addition in the receipt. ")
-receipt_total = calculate_total(receipt_contents, receipt_subtotal)
-print(f"The receipt's total is: ", receipt_total)
-
-# This section now handles prompting the user for how much the customer has paid
-print("="*60)
-print("Now the program is going to be asking you for how much the customer has paid. ")
-customer_payment = prompt_customer_payment()
-print(f"The customer has paid {customer_payment}. ")
-
-# This section now handles the calculation of the change that must be given to the customer
-print("="*60)
-print("Now the program is going to be calculating the change that you must give to the customer.")
-customer_change = calculate_customer_change(customer_payment, receipt_total)
-print(f"The customer's change is {customer_change}.")
-
-# This section now handles the display of the entire receipt itself
-print("="*60)
-print("Now the program is going to be displaying the receipt.")
-display_customer_receipt(receipt_contents, receipt_subtotal, receipt_total, customer_payment, customer_change)
