@@ -1,55 +1,66 @@
-# Python Lists
+a = [5, 1, 4, 3]
+print(sorted(a)) ## [1, 3, 4, 5]
+print(a) ## [5, 1, 4, 3]
 
-colors = ['red', 'blue', 'green']
-print(colors[0]) ## red
-print(colors[2]) ## green
-print(len(colors)) ## 3
+strs = ['aa', 'BB', 'zz', 'CC']
+print(sorted(strs)) ## ['BB', 'CC', 'aa', 'zz'] (case sensitive)
+print(sorted(strs, reverse=True)) ## ['zz', 'aa', 'CC', 'BB']
 
-# FOR and IN
-squares = [1, 4, 9, 16]
-sum = 0
-for num in squares:
-    sum += num
-print(sum) ## 30
+strs = ['ccc', 'aaaa', 'd', 'bb']
+print(sorted(strs, key=len)) ## ['d', 'bb', 'ccc', 'aaaa']
 
-list = ['larry', 'curly', 'moe']
-if 'curly' in list:
-    print('yay') ## yay
+##"key" argument specifying str.lower function to use for sorting
+print(sorted(strs, key=str.lower)) ## ['aa', 'BB', 'CC', 'zz']
 
-## print the numbers from 0 through 99
-for i in range(100):
-    print(i)
+## Say we have a list of strings we want to sort based on the last letter of the string
+strs = ['xc', 'zb', 'yd', 'wa']
 
-# While Loop
-## Access every 3rd element in a list
-i = 0
-while i < len(a):
-    print(a[i])
-    i = i + 3
+## Write a little function that takes a string, and returns its last letter.
+## This will be the key function (takes in 1 value, returns 1 value).
+def MyFn(s):
+    return s[-1]
 
-list = ['larry', 'curly', 'moe']
-list.append('shemp') ## append elem at end
-list.insert(0, 'xxx') ## insert elem at index 0
-list.extend(['yyy', 'zzz']) ## add list of elems at end
-print(list) ## ['xxx', 'larry', 'curly', 'moe', 'shemp', 'yyy', 'zzz']
-print(list.index('curly')) ## 2
+## Now pass key=MyFn to sorted() to sort by the last letter:
+print(sorted(strs, key=MyFn)) ## ['wa', 'zb', 'xc', 'yd']
 
-list.remove('curly') ## search and remove that element
-list.pop(1) ## removes and returns ('larry')
-print(list) ## ['xxx', 'moe'. 'shemp', 'yyy', 'zzz']
+from operator import itemgetter
 
-list = [1, 2, 3]
-print(list.append(4)) ## NO, does not work, append() returns None
-## Correct pattern:
-list.append(4)
-print(list)
+# (first name, last name, score) tuples
+grade = [('Freddy', 'Frank', 3), ('Anil', 'Frank', 100), ('Anil', 'Wang', 24)]
+sorted(grade, key=itemgetter(1,0))
+# [('Anil', 'Frank', 100), ('Freddy', 'Frank, 3), ('Anil', 'Wang', 24)]
 
-list = [] ## Start as the empty list
-list.append('a') ## Use append() to add elements
-list.append('b') # Use append() to add another element
+sorted(grade, key=itemgetter(0, -1))
+#[('Anil', 'Wang', 24), ('Anil', 'Frank', 100), ('Freddy', 'Frank', 3)]
 
-# List Slices
-list = ['a', 'b', 'c', 'd']
-print(list[1:-1]) ## ['b', 'c']
-list[0:2] = 'z' ## replace ['a', 'b'] with ['z']
-print(list) ## ['z', 'c', 'd']
+alist.sort() ## correct
+alist = blist.sort() ## incorrect as sort() returns None
+
+tuple = (1, 2, 'hi')
+print(len(tuple)) ## 3
+print(tuple[2]) ## hi
+tuple[2] = 'bye' ## NO, tuples cannot be changed, they are immutable
+tuple = (1, 2, 'bye') ## this works
+
+tuple = ('h1',) ## size-1 tuple
+
+(x, y, z) = (42, 13, "hike")
+print(z) ## hike
+(err_string, err_code) = Foo() ## Foo() returns a length-2 tuple
+
+nums = [1, 2, 3, 4]
+squares = [n * n for n in nums] ## [1, 4, 9, 16]
+
+strs = ['hello', 'and', 'goodbye']
+
+shouting = [ s.upper() + '!!!' for s in strs]
+## ['HELLO!!!', 'AND!!!', 'GOODBYE!!!']
+
+## Select values <= 2
+nums = [2, 8, 1, 6]
+small = [ n for n in nums if n <= 2 ] ## [2, 1]
+
+## Select fruits containing 'a', change to upper case
+fruits = ['apple', 'cherry', 'banana', 'lemon']
+afruits = [ s.upper() for s in fruits if 'a' s ]
+## ['APPLE', 'BANANA']
