@@ -1,79 +1,114 @@
-strs = ['ccc', 'aaaa', 'd', 'bb']
-print(sorted(strs, key=len)) # ['d', 'bb', 'ccc', 'aaaa']
+# Python Dict and Files
 
-## "key" argument specifying str.lower function to use for sorting
-strs = ['aa', 'BB', 'zz', 'CC']
-print(sorted(strs, key=str.lower)) ## ['aa', 'BB', 'CC', 'zz']
+# Dict Hash Table
+# Dictionary is a key/value hash table structrure
+# {} = empty dictionary
+# keys can only be strings, numbers and tuples whereas values can be anything
 
-## Say we have a list of strings we want to sort by the last letter of the string.
-strs = ['xc', 'zb', 'yd', 'wa']
+## Can build up a dictionary by starting with the empty dict {}
+## and storing key/value pairs into the dict like this:
+## dict[key] = value for that specific key
+dict = {}
+dict['a'] = 'alpha'
+dict['g'] = 'gamma'
+dict['o'] = 'omega'
 
-## Write a little function that takes a string, and returns its last letter
-## This will be the key function (takes in 1 value, returns 1 value).
-def myFn(s):
-    return s[-1]
+print(dict) ## {'a': 'alpha', 'o': 'omega', 'g': 'gamma'}
 
-## Now pass key=MyFn to sorted() to sort by the last letter:
-print(sorted(strs, key=myFn)) ## ['wa', 'zb', 'xc', 'yd']
+print(dict['a']) ## Simple lookup, returns 'alpha'
+dict['a'] = 6 ## put new key/value into dict
+'a' in dict ## True because 'a' is a key in dict
+## print(dict['z']) ## will not work because z is not a valid or existing key in dict
+if 'z' in dict: print(dict['z']) # checks if 'z' is a character stored in the dict dict, if it does it is then going to print its corresponding value
+print(dict.get('z')) # uses the .get function wherein because z is not a valid value, outputs None instead of KeyError from normal dict['z']
 
-from operator import itemgetter
-# (first name, last name, score) tuples
-grade = [('Freddy', 'Frank', 3), ('Anil', 'Frank', 100), ('Anil', 'Wang', 24)]
-print(sorted(grade, key=itemgetter(1,0)))
-# [('Anil', 'Frank', 100), ('Freddy', 'Frank', 3), ('Anil', 'Wang', 24)]
+## By default, iterating over a dict iterates over its keys.
+## Note that the keys are always in a random order.
+for key in dict:
+    print(key)
+## prints a g o
 
-print(sorted(grade, key=itemgetter(0, -1)))
-# [('Anil', 'Wang', 24), ('Anil', 'Frank', 100), ('Freddy', 'Frank', 3)]
+## Exactly the same as above
+for key in dict.keys():
+    print(key)
 
-# sort() method
-# alist.sort() ## correct
-# alist = blist.sort() ## incorrect - sort() function returns None
-# sort() does not work on any enumerable collection but sorted() works on anything
+## Get the .keys() list:
+    print(dict.keys()) ## dict_keys(['a', 'o', 'g'])
 
-# Tuples
-# fixed size grouping of elements
-# immutable and do not change size
+## Likewise, there's a .values() list of values
+    print(dict.values()) ## dict_values(['alpha', 'omega', 'gamma'])
 
-tuple = (1, 2, 'hi')
-print(len(tuple)) ## 3
-print(tuple[2]) ## hi
-tuple[2] = 'bye' ## NO, tuples are immutable which means they cannot be modified
-tuple = (1, 2, 'bye') ## this works
+## Common case -- loop over the keys in sorted order,
+## accessing each key/value
+for key in sorted(dict.keys()):
+    print(key, dict[key])
 
-# size 1 tuple
-tuple = ('hi',) ##size-1 tuple
+## .items() is the dict expressed as (key, value) tuples
+print(dict.items()) ## dict_items([('a', 'alpha'), ('o', 'omega'), ('g', 'gamma')])
 
-(x, y, z) = (42, 13, "hike")
-print(z) ## hike
-# (err_string, err_code) = Foo() ## Foo() returns a lenth-2 tuple
+## This loop syntax accesses the whole dict by looping
+## over the .items() tuple list, accessing one (key, value)
+## pair on each iteration.
+for k, v in dict.items(): print(k, '>', v)
+# we call on .items() function for dict variable, giving us a list of tuple values
+# each tuple value is then iterated whereint he first element is unpacked into k, second element is unpacked into v
+# for each iteration, we then print k > v
+## a > alpha o > omega g > gamma
 
-# List Comprehensions
-# Compact way to write an expression that expands to a whole list
+## Dict Formatting
+# % operator substitutes values from a dict into a string by name:
 
-nums = [1, 2, 3, 4]
-squares = [ n * n for n in nums ] ## [1, 4, 9, 16]
-# iterates over the nums variable
-# each element in nums is used as the value for n in the iterator
-# n is multipled by itself in the expression
-# appended into the squares variable list
+h = {}
+h['word'] = 'garfield'
+h['count'] = 42
+s = 'I want %(count)d copies of %(word)s' % h # %d for int, %s for string
+# 'I want 42 copies of garfield'
 
-strs = ['hello', 'and', 'goodbye']
-shouting = [ s.upper() + '!!!' for s in strs ]
-# for each element in strs
-# they get put into iterator variable s 
-# the element of iterator variable s is then uppercased and then concatenated with !!!
-# element is then appended into the shouting variable inside of a list
+# You can also use str.format()
+s = 'I want {count:d} copies of {word}'.format(h)
 
-## Select values <= 2
-nums = [2, 8, 1, 6]
-small = [ n for n in nums if n <= 2 ] ## [2, 1]
-## iterates over the nums variable containing a list
-## each element in the list first undergoes the condition check of the if statement
-## if element passes condition check, is appended to the list contained within the small variable
+## Del
+# handles deletions
 
-## Select fruits containing 'a', change to upper case
-fruits = ['apple', 'cherry', 'banana', 'lemon']
-afruits = [s.upper() for s in fruits if 'a' in s]
-## iterates over each element of the list contained within the fruits variable
-## applies the if condition wherein if the element contains an 'a' character, it is then uppercased and appended into the list contained within the afruits variable
-## ['APPLE', 'BANANA']
+var = 6
+del var # var no more, does not longer exist
+
+list = ['a', 'b', 'c', 'd']
+del list[0] ## Deletes first element
+del list[-2:] ## Deletes third and fourth element or the last 2 elements
+print(list) ## ['b'] applies changes to the actual original list itself
+
+dict = {'a': 1, 'b': 2, 'c': 3}
+del dict['b'] ## Deletes 'b' entry, deleting both itself as the key and its corresponding value
+print(dict) ## {'a':1, 'c': 3}
+
+## Files
+# open() function that opens and returns a file handle
+# 'r' for reading (only outputs), 'w' for writing (make modifications), 'a' for appending (only add but not remove), 'rt' for read text
+
+# Echo the contents of a text file
+f = open('foo.txt', 'rt', encoding='utf-8')
+# opens the foo.txt file in read text mode with utf-8 encoding
+# file is then stored into the f variable as its handle
+for line in f:
+    print(line, end='')
+
+f.close()
+
+# we iterate over each line in the foo.txt file through its f handle
+# every line is then printed and with end='' means there is no end of line character as the line itself already contains an end of line (single spacing only prevents double spacing)
+
+## if you use .readlines() method - reads whole file into a list
+## .read() reads the whole file into a single string
+## f.write(string) - easiest way to write data to an open output file
+
+## Files Unicode
+with open('foo.txt', 'rt', encoding='utf-8') as f:
+    for line in f:
+        # here line is a *unicode* string
+
+with open('write_test', encoding='utf-8', mode='wt') as f:
+    f.write('\u20ACunicode\u20AC\n') # unicode
+    # AKA prtint 
+
+    
