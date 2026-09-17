@@ -1,114 +1,139 @@
-# Python Dict and Files
+### Python Regular Expressions
+# matching text patterns
+# re module provides regular expression support
+match = re.search(pat, str)
+# the re.search() function takes a pattern and a string and searches for the pattern within the string
 
-# Dict Hash Table
-# Dictionary is a key/value hash table structrure
-# {} = empty dictionary
-# keys can only be strings, numbers and tuples whereas values can be anything
+import re
 
-## Can build up a dictionary by starting with the empty dict {}
-## and storing key/value pairs into the dict like this:
-## dict[key] = value for that specific key
-dict = {}
-dict['a'] = 'alpha'
-dict['g'] = 'gamma'
-dict['o'] = 'omega'
+str = 'an example word:cat!!'
+match = re.search(r'word:\w\w\w', str)
+# If-statement after search() tests if it succeeded
+if match:
+    print('found', match.group()) ## 'found word:cat'
+else:
+    print('did not find')
 
-print(dict) ## {'a': 'alpha', 'o': 'omega', 'g': 'gamma'}
+## Basic Patterns
+# a, X, 9 < ordinary characters that match themselves excactly
+# . (period) - matches any single character except newline formatting \n
+# \w (lowercase w) - matches a "word" character
+# \W (uppercase W) - matches any non-word character
+# \b - boundary between word and non-word
+# \s (lowercase s) - matches a single whitespace characters
+# \S (uppercase S) - matches any non-whitespace character.
+# \t, \n, \r  - matches tab, newline, and return
+# \d - matches any decimal digit [0-9]
+# ^ - start, $ - end = matches the start or end of a string
+# \ - inhibits the "specialness" of a chartacter 
 
-print(dict['a']) ## Simple lookup, returns 'alpha'
-dict['a'] = 6 ## put new key/value into dict
-'a' in dict ## True because 'a' is a key in dict
-## print(dict['z']) ## will not work because z is not a valid or existing key in dict
-if 'z' in dict: print(dict['z']) # checks if 'z' is a character stored in the dict dict, if it does it is then going to print its corresponding value
-print(dict.get('z')) # uses the .get function wherein because z is not a valid value, outputs None instead of KeyError from normal dict['z']
+# the match finds from start to end - stops at the first match found
+# the entire pattern must match, not the string
+# if re.search() is found, match is going not be None and match.group() returns the matching text
 
-## By default, iterating over a dict iterates over its keys.
-## Note that the keys are always in a random order.
-for key in dict:
-    print(key)
-## prints a g o
+## Search for pattern 'iii' in string 'piiig'
+## Entire pattern must match, but it may appear anywhere in the string
+## On success, match.group() returns or is the matched text
+match = re.search(r'iii', 'piiig') # found, match.group() = 'iii'
+match = re.search(r'igs', 'piiig') # not foujnd, match == None
 
-## Exactly the same as above
-for key in dict.keys():
-    print(key)
+## . = any char but \n
+match = re.search(r'..g', 'piiig') # found, match.group() == "iig"
 
-## Get the .keys() list:
-    print(dict.keys()) ## dict_keys(['a', 'o', 'g'])
+## \d = digit char, \w = word char
+match = re.search(r'\d\d\d', 'p123g') # found, match.group() == '123'
+match = re.search(r'\w\w\w', '@@abcd') # found, match.group() == 'abc'
 
-## Likewise, there's a .values() list of values
-    print(dict.values()) ## dict_values(['alpha', 'omega', 'gamma'])
+## Repetition
+# + = 1 or more occurences of the pattern to its left, e.g. 'i+' one or more i's
+# * = 0 or more occurences of the pattern to its left
+# ? = match 0 or 1 occurences of the pattern to its left
 
-## Common case -- loop over the keys in sorted order,
-## accessing each key/value
-for key in sorted(dict.keys()):
-    print(key, dict[key])
+## Repetition Examples
+## i+ = one or more i's, as much or as many as possilbe
+match = re.search(r'pi+', 'piiig') # found, match.group() = "piii"
 
-## .items() is the dict expressed as (key, value) tuples
-print(dict.items()) ## dict_items([('a', 'alpha'), ('o', 'omega'), ('g', 'gamma')])
+## Finds the first/leftmost solution, and within it drives the +
+## as far as possible (aka 'leftmost and largest').
+## In this example, note that it does not get to the second set of i's.
+match = re.search(r'i+', 'piigiiii') # found, match.group() == "ii"
 
-## This loop syntax accesses the whole dict by looping
-## over the .items() tuple list, accessing one (key, value)
-## pair on each iteration.
-for k, v in dict.items(): print(k, '>', v)
-# we call on .items() function for dict variable, giving us a list of tuple values
-# each tuple value is then iterated whereint he first element is unpacked into k, second element is unpacked into v
-# for each iteration, we then print k > v
-## a > alpha o > omega g > gamma
+## \s* = zero or more whitespace characters
+## Here look for 3 digits, possibly separated by whitespace.
+match = re.search(r'\d\s*\d\s*\d', 'xx1 2   3xx') # found, match.group() "1 2   3"
+match = re.search(r'\d\s*\d\s*\d', 'xx12  3xx') # found, match.group() == "12  3"
+match = re.search(r'\d\s*\d\s*\d', 'xx123xx') # found, match.group() == "123"
 
-## Dict Formatting
-# % operator substitutes values from a dict into a string by name:
+## ^ = matches the start of the string, so this fails:
+match = re.search(r'^b\w+', 'foobar') # not found, match.group() == None
+## but without the ^ it succeeds:
+match = re.search(r'b\w+', 'foobar') # found, match.group() == "bar"
 
-h = {}
-h['word'] = 'garfield'
-h['count'] = 42
-s = 'I want %(count)d copies of %(word)s' % h # %d for int, %s for string
-# 'I want 42 copies of garfield'
+## Emails Example
+str = 'purple alice-b@google.com monkey dishwasher'
+match = re.search(r'\w+@\w+', str)
+if match:
+    print(match.group()) ## 'b@google'
 
-# You can also use str.format()
-s = 'I want {count:d} copies of {word}'.format(h)
+## Square Brackets
+# [abc] matches a or b or c
+match = re.search(r'[\w.-]+@[\w.-]+', str)
+if match:
+    print(match.group()) ## 'alice-b@google.com'
 
-## Del
-# handles deletions
+# [a-z] matches all lowercase letters in square brackets
+# [abc-] matches a or b or c or a -
+# [^ab] matches all characters except for a or b
 
-var = 6
-del var # var no more, does not longer exist
+## Group Extraction
+# pick out parts of the matching text
+# match.group(1) - match text corresponding to the 1st left parenthesis
+# match.group(2) - match text corresponding to the 2nd left parenthesis
 
-list = ['a', 'b', 'c', 'd']
-del list[0] ## Deletes first element
-del list[-2:] ## Deletes third and fourth element or the last 2 elements
-print(list) ## ['b'] applies changes to the actual original list itself
+str = 'purple alice-b@google.com monkey dishwasher'
+match = re.search(r'([\w.-])+@([\w.-]+)', str)
+if match:
+    print(match.group()) ## 'alice-b@google.com' (the whole match)
+    print(match.group(1)) ## 'alice-b (the username, group 1)
+    print(match.group(2)) ## 'google.com' (the host, group 2)
 
-dict = {'a': 1, 'b': 2, 'c': 3}
-del dict['b'] ## Deletes 'b' entry, deleting both itself as the key and its corresponding value
-print(dict) ## {'a':1, 'c': 3}
+## findall
+# findall() - function from re that finds all of the matching patterns in a string and returns a list of all of the patterns matched - one matching pattern is one element in the list
 
-## Files
-# open() function that opens and returns a file handle
-# 'r' for reading (only outputs), 'w' for writing (make modifications), 'a' for appending (only add but not remove), 'rt' for read text
+## Suppose we have a text with many email addresses
+str = 'purple alice@google.com, blah monkey bob@abc.com blah dishwasher'
 
-# Echo the contents of a text file
-f = open('foo.txt', 'rt', encoding='utf-8')
-# opens the foo.txt file in read text mode with utf-8 encoding
-# file is then stored into the f variable as its handle
-for line in f:
-    print(line, end='')
+## Here re.findall() returns a list of all the found email strings
+emails = re.findall(r'[\w\.-]+@[\w\.-]+', str) ## ['alice@google.com', 'bob@abc.com']
+for email in emails:
+    # do something with each found email string
+    print(email)
 
-f.close()
+## findall with files
+# Open file
+f = open('test.txt', encoding='utf-8')
+# Feed the file text into findall(); it returns a list of all the found strings
+strings = re.findall(r'some pattern', f.read())
 
-# we iterate over each line in the foo.txt file through its f handle
-# every line is then printed and with end='' means there is no end of line character as the line itself already contains an end of line (single spacing only prevents double spacing)
+## findall and groups
+str = 'purple alice@google.com, blah monkey bob@abc.com blah dishwasher'
+tuples = re.findall(r'([\w\.\-]+)@([\w\.-]+)', str)
+print(tuples) ## [('alice', 'google.com'), ('bob', 'abc.com')]
+for tuple in tuples:
+    print(tuple[0]) ## username
+    print(tuple[1]) ## host
 
-## if you use .readlines() method - reads whole file into a list
-## .read() reads the whole file into a single string
-## f.write(string) - easiest way to write data to an open output file
+## Options
+# IGNORECASE - ignore upper/lower case differences
+# DOTALL - allow dot to match newline
+# MULTILINE - allows ^/$ to match the start and end of each line
 
-## Files Unicode
-with open('foo.txt', 'rt', encoding='utf-8') as f:
-    for line in f:
-        # here line is a *unicode* string
+## Greedy vs. Non-Greedy (optional)
 
-with open('write_test', encoding='utf-8', mode='wt') as f:
-    f.write('\u20ACunicode\u20AC\n') # unicode
-    # AKA prtint 
+## Substitution
+str = 'purple alice@google.com, blah monkey bob@abc.com blah dishwasher'
+## re.sub(pat, replace, str) -- returns a new string with all replacements,
+## \1 is group(1), \2 group(2) in the replacement
+print(re.sub(r'([\w\.-]+)@([\w\.-]+)', r'\1@yo-yo-dyne.com', str))
+## purple alice@yo-yo-dyne.com, blah monkey bob@yo-yo-dyne.com blah dishwasher
 
-    
