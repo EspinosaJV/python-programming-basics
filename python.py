@@ -1,77 +1,39 @@
-## Utilities
-# File System -- os, os.path, shutil
+print("Welcome to Fantasy Quest!")
 
-# os and os.path modules for interacting with the file system
-# shutil can copy files
+sword_damage = 10
+player_health = 100
+health_after_attack = player_health - sword_damage # the fix here is turning + to minus to subtract health from sword damage instead
 
-# filenames = os.listdir(dir) - the list of filenames in that directory path (not including . and ..). The filenames are just names in directory - not absolute path
-# os.path.join(dir, filename) - join directory & filename to make a path
-# os.path.abspath(path) - returns absolute path of given path
-# os.path.dirname(path) & os.path.basename(path) - returns the dirname and the basename
-# os.path.exists(path) - true or false, true if exists
-# os.mkdir(dir_path) - makes one dir
-# os.makedirs(dir_path) - make all needed dirs in the path
-# shutil.copy(source-path, dest-path) - copy file
+# Don't touch below this line
 
-## Example pulls filenames from a dir, prints their relative and absolute paths
-def printdir(dir):
-    filenames = os.listdir(dir)
-    for filename in filenames:
-        print(filename) ## foo.txt
-        print(os.path.join(dir, filename)) ## dir/foo.txt (relative to current dir)
-        print(os.path.abspath(os.path.join(dir, filename))) ## /home/nick/dir/foo.txt
+print(f"Lollilfred's health is: {player_health}")
+print(f"Lollilfred is hit by a sword for {sword_damage} damage...")
+print(f"Lollilfred's health is now: {health_after_attack}")
 
-# Running External Processes -- subprocess
-# subprocess module is a simple way to run an external command & capture the output
+# Print a message to the player
+print("Use the arrow keys to move")
 
-import subprocess
+# Python is not often used in front-end apps
+# Python is known for being simple to read & write
+# Code is a series of instructions that computers can follower
+# Source code - code that we write as human beings that we can read & understand that is then converted to machine code
+# Machine code - binary code that computers can read & understand
 
-## Given a dir path, run an external 'ls -l' on it --
-## shows how to call an external program
-def listdir(dir):
-    cmd = 'ls -l ' + dir
-    print("Command to run:", cmd) ## good to debug cmd before actually running it
-    (status, output) = subprocess.getstatusoutput(cmd)
-    if status: ## Error case, print the command's output to stderr and exit
-        sys.stderr.write(output)
-        sys.exit(status)
-    print(output) ## Otherwise do something witht he command's output
+print('hi')
+print(4) # prints a number
+print(4 + 5) # prints a result of equations
 
-## Exceptions
-# run-time error that halts normal execution 
+# my iteration of the exercise
+player_sword = 250
+enchanted_buff = 75
+final_attack = player_sword + enchanted_buff
+print(final_attack)
 
-try:
-    ## Either of these two lines could throw an IOError, say
-    ## if the file does not exist or the read() encounters a low level error.
-    f = open(filename, 'rb')
-    data = f.read()
-    f.close()
-except IOError:
-    ## Control jumps directly to here if any of the above lines throws IOError.
-    sys.stderr.write('problem reading:' + filename)
-## In any case, the code then continues witht he line after the tyry/except
+# video tutorial
+print(250 + 75)
 
-## HTTP -- urllib and urlparse
-from urllib.request import urlopen
+# syntax - structure of the sentence makes sense & is also correct, the rules for valid code
+# syntax error - statement is not put together correctly - one of the rules are broken
+# print("Welcome to Fantasy Quest"] - syntax error, end bracket is not a parenthesis
+print("Welcome to Fantasy Quest") # this is correct syntax
 
-## Given a url, try to retrieve it. If it's text/html,
-## print its base url and its text.
-def wget(url):
-    ufile = urlopen(url) ## get file-like object for url
-    info = ufile.info() ## meta-info about the url content
-    if info.get_content_type() == 'text/html':
-        print('base url:' + ufile.geturl())
-        text = ufile.read() ## read all its text
-        print(text)
-
-## Version that uses try/except to print an error message if the
-## urlopen() fails.
-def wget2(url):
-    try:
-        ufile = urlopen(url)
-        if ufile.info().get_content_type() == 'text/html':
-            print(ufile.read())
-    except IOError:
-        print('problem reading url:', url)
-
-    
