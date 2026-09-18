@@ -1,173 +1,211 @@
-# Chapter 2 - Variables
-# variables are how we store data in our program for usage later
+# Chapter 3 - Functions
+# allows us to reuse & organize code
 
-player_health = 1000
-print(player_health)
+def area_of_circle(radius):
+    pi = 3.14
+    area = pi * radius * radius
+    return area
 
-# variables can hold any type of data - varies by what they are holding
+sword_length = 1.0
+spear_length = 2.0
 
-player_health = 1000
+# don't touch above this line
 
-# reduce by 100 here
-player_health -= 100
-
-print(player_health)
-
-# and here
-player_health -= 100
-
-print(player_health)
-
-# and here
-player_health -= 100
-
-print(player_health)
-
-# and here
-player_health -= 100
-
-print(player_health)
-
-# another exercise
-# create a new variable called armored_health and set it equal to player_health * armor_multiplier
-
-player_health = 1000
-armor_multiplier = 2
-
-# create armored_health here
-armored_health = player_health * armor_multiplier
-print(armored_health)
-
-# another exercise
-# when our hero walks through poison, their health should be reduced. Right now the hero is gaining 10 health instead of losing 10 health. Change the poison_damage variable to be negative.
-
-player_health = 100
-poison_damage = -10
+sword_area = area_of_circle(sword_length)
+spear_area = area_of_circle(spear_length)
 
 # don't touch below this line
 
-player_poison_health = player_health + poison_damage
+print("Sword length:", sword_length, "meters.")
+print("Sword attack area:", sword_area, "square meters")
 
-print(player_poison_health)
+print("Spear length:", spear_length, "meters.")
+print("Spear attack area:", spear_area, "square meters")
 
-## Comments
-# comments are ignored by the computer
-
-# hi I'm a comment!
-# comments are good for explaining code sections
-
-# the best_sword variable holds the value of the best sword in the video game (the # sign before a statement makes it a comment)
-best_sword = "scimitar"
-print(best_sword)
-
-my_name = "Trash Puppy" # conventional way of naming a variable in python
-my7_name = "Trash Puppy"
-# 7my_name = "Trahs Puppy" # will cause the program to error because number at the start
-# !my_name = "Trash Puppy" # will cause the program to error because special symbol at the start
-
-# conventional ways to name variables
-variablename = 'TP' # this is not a conventional way of naming a variable
-
-variableName = 'TP' # Camel Case where first word is lowercase and then the next words are uppercase first letters (heroHealth)
-variable_name = 'TP' # snake_case - this is python's convention (hero_health)
-VARIABLE_NAME = 'TP' # SCREAMING SNAKE_CASE - not necessarily a good idea and indicates a constant variable
-
-# String types are just text - called strings because char are individual elements whereas a string of chars is called a string
-# a float is a number withb a decimal (5.2 or -5.2)
-# a boolean is a data type that can only have one or two values which is True or False (player_has_magic = True)
-
-# another exercise
-# Fix the bugs in the code to move on. player_health should be an integer and player_has_magic should be a boolean
-
-player_health = 100
-player_has_magic = True
-
-# don't touch below this line
-print(f"player_health is a/an {type(player_health)}")
-print(f"player_has_magic is a/an {type(player_has_magic)}")
-
-# F-strings in python
-# these allow us to use our variables within strings
-
-# without using f-strings
-name = "Trash Puppy"
-height = "6ft"
-print("My name is " + name + " and I am " + height + " tall!")
-
-# while using f-strings
-print(f"My name {name} and I am {height} tall!")
-
-# another exercise
-# fix the bug on line 7 - use an f-string to inject the dynamic values into the string:
-# 1. replace NAME with the value of the name variable
-# 2. replace RACE with the value of the race variable
-# 3. replace AGE with the value of the age variable
-# do not hard code the values into the string
-
-name = "Yarl"
-age = 37
-race = "dwarf"
-
-# Don't edit above this line
-print("NAME is a RACE who is AGE years old.")
-print(f"{name} is a {race} who is {age} years old.") # this is the solution
-
-# Nonetype Variables
-# variable holds literally nothing
-# if we have a variable that is set early in the code but is only used in specific situations - we sometimes want to check if this variable holds a value or not where nonetype is useful
+## Multiple Parameters
+# Functions can have multiple parameters
+# order matters for multiple parameters
+# we don't need to name parameters when passing them to function calls
 
 # Another exercise
-# Declare a variable named enemy and set it to None. Don't change the print() function.
+damage_one = 2
+damage_two = 4
+damage_three = 3
+damage_four = -1
+damage_five = 10
+damage_siz = 5
 
-# create the "enemey" variable here
-enemy = None
+# Don't touch above this line
 
-# don't touch below this line
-print(enemy is None)
+def triple_attack(slash_one, slash_two, slash_three):
+    total_dmg = slash_one + slash_two + slash_three
+    return total_dmg
 
-# Dynamic Typing
-# Python is dynamically typed - the type of the variables can change entirely dependent on what value the variables currently hold
-speed = 5 # speed here is a variable of integer type
-speed = "five" # speed here then becomes a variable of string type
+# Don't touch below this line
 
-# in general it is not advisable to change variable types constantly - keep variables to be the same type throughout the code
-# Python employs Dynamic Typing - variable type can change throughout the code
+print("Getting damage for", damage_one, damage_two, "and", damage_three, "...")
+print(triple_attack(damage_one, damage_two, damage_three), "points of damage dealt!")
+print("============================================================================")
 
-# Math With Strings
-sentence_start = "You have "
-sentence_end = " health"
+print("Getting damage for", damage_four, damage_five, "and", damage_siz, "...")
+print(triple_attack(damage_four, damage_five, damage_six), "points of damage dealt!")
+print("============================================================================")
 
-player1_health = "1200"
-player2_health = "1100"
+# We need to calculate the total damage from a triple attack combo. Complete the triple_attack function that takes three numbers as its parameters and returns the sum
 
-# Don't edit above this line
-print(sentence_start + player1_health) # You have 1200
-print(sentence_start * 6) # You have You have You have You have You have You have
+## Where to declare functions
+
+def main():
+    print("Fantasy Quest is booting up...")
+    print("Game is running!")
+
+main()
+
+# functions need to be defined before they are called
+# functions do not need to be defined in the same order that they are called - as long as they are defined before they are called
+# best practice when it comes to function ordering is to have an entry point function defined which is then only placed at the bottom
+
+## Another Exercise
+# In Fantasy Quest as characters are running around the map they can lose health due to heat exhaustion. The game tracks the temperature in Fahrenheit, but we need to display the temperature in Celsius for players outside the US.
+
+# Write a function called to_celsius that returns the temperature converted from Fahrenheit to Celsius
+
+def to_celsius(f):
+    temp = (f - 32) * 5 / 9
+    # celsius = (5 / 9) * (f - 32)
+    return temp
+    # return celsius
+
+## Don't touch below this line
+
+def test(f):
+    c = round(to_celsius(f), 2)
+    print(f, "degrees fahrenheit is", c, "degrees celsius")
+
+test(100)
+test(88)
+test(104)
+test(112)
+
+# def is the keyword used to create functions in Python
+# functions only need to be defined once
 
 # Another exercise
-# We have a second player in our game!
-# We need to tell each of our players how much health they have left.
-# Edit line 9 to print Player 1's health: You have 1200 health using string concatenation and the variables provided
-# Edit line 10 to print Player 2's health: You have 1100 health in the same way
 
-sentence_start = "You have "
-sentence_end = " health"
+def hours_to_seconds(hours):
+    minutes = hours * 60
+    seconds = minutes * 60
 
-player1_health = "1200"
-player2_health = "1100"
+    return seconds
 
-# Don't edit above this line
+# Don't touch below this line
 
-print(sentence_start + player1_health + sentence_end)
-print(sentence_start + player2_health + sentence_end)
+def test(hours):
+    secs = hours_to_seconds(hours)
+    print(hours, "hours is", secs, "seconds")
 
-# Multi-Variable Declaration
-# More than 1 variable on the left hand side of the assignment sign - values separated by commas
-# sword_name, sword_damage, sword_length = "Excalibur", 10, 200
-# this is the same as
-# sword_name = "Excalibur"
-# sword_damage = 10
-# sword_length = 200
+test(10)
+test(1)
+test(25)
+test(100)
+test(33)
 
-# clean code is code that is easy for developers to read and understand
+# a function without a return - it will always return None by default (an example of a NoneType)
 
+## Multiple Return Values
+
+# Another Exercise
+# Complete the become_warrior function. It accepts 3 inputs:
+# first_name: string type
+# last_name: string type
+# power: integer
+
+# It should return 2 values:
+
+# 1. The warrior's "title", which is a string in this format:
+# first_name last_name the warrior
+# Where first_name and last_name are the actual values of the first_name and last_name inputs. Note: make sure the format is exact, do not add capitalization or punctuation.
+
+# 2. A new "power" value that is one greater than the input power
+# For example
+# title, power = become_warrior("Aang", "Airbender", 100)
+# print(title)
+# "Aang Airbender the warrior"
+# print(power)
+# 101
+
+def become_warrior(first_name, last_name, power):
+    title = f"{first_name} {last_name} the warrior"
+    new_power = power + 1
+
+    return title, new_power
+
+# Don't edit below this line
+
+def main():
+    test("Frodo", "Baggings", 5)
+    test("Bilbo", "Baggins", 10)
+    test("Gandalf", "The Grey", 9000)
+
+def test(first_name, last_name, power):
+    title, new_power = become_warrior(first_name, last_name, power)
+    print(title, "has a power level of:", new_power)
+
+main()
+
+# Parameters vs Arguments
+# parameters - what is being given to the function IN the function definition - placeholders or containers for the arguments
+# arguments - when function is called - the values provided withnt he function call are the arguments - actual values
+
+# Default Values for Function Arguments
+
+def get_punched(health, armor=0):
+    new_health = health + armor
+    dmg = 50
+    new_health = new_health - dmg
+    return new_health
+
+def get_slashed(health, armor=0):
+    new_health = health + armor
+    dmg = 100
+    new_health = new_health - dmg
+    return new_health
+
+# Don't touch below this line
+
+def test(health, armor):
+    print(f"Health: {health}, Armor: {armor}")
+    print(f"Health after punch: {get_punched(health, armor)}")
+    print("=================================================")
+    print(f"Health: {health}, Armor: {armor}")
+    print(f"Health after slash: {get_slashed(health, armor)}\n")
+    print("=================================================")
+    print(f"Health: {health}, Armor: no armor!")
+    print(f"Health after slash: {get_slashed(health)}\n")
+    print("=================================================")
+    print(f"Health: {health}, Armor: no armor!")
+    print(f"Health after punch: {get_punched(health)}")
+    print("=================================================")
+
+# printing vs returning
+
+def get_title(first_name, last_name, job):
+    title = first_name + " " + last_name + " the " + job
+    return title
+
+# if no return line, function just returns None
+
+# Don't touch below this line
+
+def test(first_name, last_name, job):
+    title = get_title(first_name, last_name, job) # title just gets None
+    print("First name:", first_name)
+    print("Last name:", last_name)
+    print("Job:", job)
+    print("Title:", title)
+    print("=========================================")
+
+test("Frodo", "Baggins", "warrior")
+test("Bilbo", "Baggins", "thief")
+test("Gandalf", "The Grey", "wizard")
+test("Aragorn", "Son of Arathorn", "ranger")
