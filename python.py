@@ -1,75 +1,83 @@
-## Chapter 4 - Scope
-# Scope is the context that a variable or a function belongs to
-# everything that is defined or created in thbe program has its own scope
+## CHAPTER 5 - TESTING & DEBUGGING
 
-# example code from the lesson
+# tests the functionality of the code we write - unit tests
+# we write inputs to the code that we write expecting outputs - unit tests
 
-# THIS IS THE PARENT SCOPE
-movie = "Reservoir Dogs"
-color = "blonde"
+def total_xp(level, xp_to_add):
+    pass
 
-def start_movie():
-    # This is the start_movie scope
-    a = get_actor()
-    message = f"The movie {movie} is starting... Starring {a}"
+# unit tests rpovide run cases that provide different sets of inputs
+# unit tests also provide submit cases that provide different sets of input swhen we decide to submit a code
 
-    return message
+# we want to test our code bit by bit - methodical with how we test things
 
-def get_actor():
-    # This is the get_actor scope
-    if cn == "Mr. Blonde":
-        actor = "Michael Madsen"
+# output testing - just checking the outputs of our code
+# unit testing - inputting different values into our code to see how they are processed
 
-    if cn == "Mr. Pink":
-        actor = "Steve Buscemi"
+## Assignment
+# complete the total_xp function. It accepts two integers as input:
+# level and xp_to_add
+# There are 100 xp per level and total_xp should convert the current level to xp, then add this current xp to the xp_to_add argument and return the player's total xp. For example:
+# If a player is level 1 and gains 100 xp, they have 200 total xp.
+# If a player is level 2 and gains 250 xp, they have 450 total xp.
+# If a player is level 170 and gains 590 xp, they have 17590 total xp.
 
-    return actor
+def total_xp(level, xp_to_add):
+    base_xp = level * 100
+    total = base_xp + xp_to_add
 
-def get_codename():
-    if color == "blonde":
-        codename = "Mr. Blonde"
+    return total
 
-    if color == "pink":
-        codename = "Mr. Pink"
+# Debugging
+# it's best practice to debug code before making it go live
 
-    return codename
+def take_magic_damage(health, resist, amp, spell_power):
+    total_damage = spell_power * amp
+    actual_damage_dealt = total_damage - resist
+    new_health = health - actual_damage_dealt
 
-cn = get_codename()
-m = start_movie()
-print(m)
+    return new_health
 
-# Another Exercise
-# Find the bug in the code on line 10. We're using variable names from the wrong scope. Fix it!
+# Assignment
+# Complete the take_magic_damage function. It should return the new_health after calculating how much magic-type damage the player takes. Here is a description of the arguments:
+# health: the player's starting health
+# resist: the player's magic resistance. This reduces the damage they take by a static amount
+# amp: the attacker's magic amplification. This increases the damage they deal by a damage multiplier
+# spell_power: the base damage of the spell
+# first, calculate the total maximum damage to be inflicted by multiplying the spell_power by the amp. Then, subtract the resist from the total damage to get the actual damage dealt. Apply that damage to the player's health and return the new health.
 
-def get_max_health(modifier, level):
-    return modifier * level
+# Learning effectively
+# First read through the whole lesson & understand the lesson
+# For each assignment - read through whole assignment & understand the assignment
+# Add print statements to code to help debug
 
-my_modifier = 5
-my_level = 10
+# Debugging Practice
 
-## don't touch above this line
+def unlock_achievement(before_xp, ach_xp, ach_name):
+    after_xp = before_xp + ach_xp
+    print(f"After XP = {after_xp}")
 
-max_health = get_max_health(my_modifier, my_level)
+    alert = f"Achievement Unlocked: {ach_name}"
+    print(f"Alert string = {alert}")
+    return after_xp, alert
 
-# don't touch below this line
+# Assignment
+# Let's complete the unlock_achievement function. It accepts 3 arguments:
+    # before_xp - int
+    # ach_xp - int
+    # ach_name - str
 
-# Global Scope
-# the parent or the entire program - the scope of it - available everywhere throughout the program
+# It should return 2 values:
+    # The player's xp after the achievement is unlocked (The sum of before_xp and ach_xp)
+    # An alert message that says "Achievement Unlocked: ACHIEVEMENT_NAME", WHERE ACHIEVEMENT_NAME is the name of the achievement
 
-# ?
-player_level = 4
+# Stack Trace
+# Also known as Traceback
+# Tells us that there are errors in our different files
+# Python treats whitespace as meaningful - indents needs to be 4 spaces long
+# 
 
-def calculate_health(modifier):
-    return player_level * modifier
-
-def calculate_primary_stats(armor_bonus, modifier):
-    return armor_bonus + modifier + player_level
-
-# Don't touch below this line
-
-print(f"Character has {calculate_health(10)} max health.")
-
-print(f"Character has {calculate_primary_stats(3, 8)} primary stats.")
-
-# functions can always access variables defined in the global scope
-# code cannot access variables from outside of a function when they are defined inside of it
+def create_stats_message(strength, wisdom, dexterity):
+    total = strength + wisdom + dexterity
+    msg = f"You have {strength} stength, {wisdom} wisdom, and {dexterity} dexterity for a total of {total} stats."
+    return msg
