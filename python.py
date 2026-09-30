@@ -1,108 +1,41 @@
-## CHAPTER 10 - DICTIONARIES
-# another data structure for Python
-# saves data in a key-value pair instead of it just being a single item
+## SETS
+# Another data structure in Python a lot like sets
+# Sets can only hold 1 of each item - meaning all items in the set needs to be unique
+# We use sets to check if a value is in a set - deduplication - and really fast lookup
 
-# POTIONS DICTIONARY
-# dictionaries are a good way to save data with varying properties
-# dictionary values can be of any data type
-potion = {
-    "name" : "Potion of Spell Power", # "name" is a key which is mapped to its value of "Potion of Spell Power"
-    "stat buff" : "Spell Critical",
-    "multiplier" : 0.25,
-    "resource pool" : ("magika",),
-    "resource increase" : [500],
-    "other effects" : None,
-    "zone drop": "Vvardenfell"
-}
+my_set = {'Potion of Healing', '200 Gold', 'Bronze Sword'}
+my_set2 = {} # Python will treat this as an empty dictionary
+my_set3 = set() # Proper way to initialize an empty set
 
-stat_buff = potion['staff buff'] # access a dictionary and get a specific value out of it
-print(f"Stat buff: {stat_buff}")
+my_set.add('500 arrows') # adds the 500 arrows element into the my_set set
 
+print(f"The following items are in your inventory: {my_set}")
 
-# CHANGE ME:
-# potion = potion
+# finding a value in a set is a lot faster & more efficient than finding a value in a list in Python
 
-print(f"You've taken a {potion['name']}...")
+# in a list - finding a value is slow because we have to look into every element individually to see if the element matches what we are looking for
+# in a set - finding a value is faster because Python puts the value through an equation and the result tells Python the address in memory already
 
-print(f"Your {potion['stat buff']} has increased by {100 * potion['multiplier']}% !")
+## Iterating over a set
 
-def get_character_record(name, server, level, rank):
-    record = {
-        'name' : name,
-        'server' : server,
-        'level' : level,
-        'rank' : rank,
-        'id' : f"{name}#{server}",
-    }
-
-    return record
-
-## SETTING DICTIONARY VALUES
-potion['zone drop'] = 'Northern Elsweyr' # zone drop does not exist - what it does is make a new key which is zopne drop and its value which is Northern Elsweyr
-
-print(f"This potion only drops in {potion['zone_drop']}")
-
-# syntax for dictionary is dict[key] = value # creates a new key value pair in dict
-# if you assign a new value to an existing key - the value updates for that specific key
-
-## DELETING DICTIONARY VALUES
-del potion['zone drop']
-
-print(potion) # zone drop key value pair is now dropped as it has been deleted
-
-# If you try to del a key that doesn't exist in the dictionary - it will cause an error
-
-## CHECKING IF A SPECIFIC KEY EXISTS IN THE DICTIONARY
-is_in = 'stat buff' in potion # this will result to a True or False stored in the is_in variable
-print(is_in)
-
-# if using the in keyword - wwe can only check if the key exists in the dictionary
-
-# Assignment
-def count_enemies(enemy_names):
-    counts = {}
-
-    for enemy in enemy_names:
-        if enemy in counts:
-            counts[enemy] += 1
-        else:
-            counts[enemy] = 1
-
-    return counts
-
-## ITERATING OVER A DICTIONARY
-# List
-player_inventory = ["200 Gold", "Iron Breastplate", "Potion of Healing"]
-
-# Iteration syntax:
-for item in player_inventory:
-    print(f"Item: {item}")
-
-# Dictionary
-# Iteration syntax:
-for key in potion:
-    print(f"Key: {key}")
+for item in my_set:
+    print(f"Current item: {item}")
 
 ## Assignment
-# Iterating over a dictionary in Python
+# Complete the remove_duplicates function. It should take a list of spells that a player has learned and return a new List where there is at most one of each title. You can accomplish this by creating a set, adding all the spells to it, then iterating over the set and adding all the spells back into a list and returning the list.
+# It makes no sense to learn a spell twice! Once it's learned, it's learned forever.
 
-def get_most_common_enemy(enemies_dict):
-    if not enemies_dict:
-        return 
-    
-    most_common_enemy = float('-inf') # this is going to create the value negative infinity and saves it to the variable
+def remove_duplicates(spells):
+    unique_spells = set(spells)
+    new_list = []
 
-    for enemy in enemies_dict:
-        enemy_occurences = enemies_dict[enemy]
+    for spell in unique_spells:
+        new_list.append(spell)
 
-        if enemy_occurences > most_common_enemy:
-            most_common_enemy = enemy_occurences
-            name = enemy
+    return new_list
 
+## Removing Items from a Set
 
-    return name
+my_set.remove('200 Gold')
 
-## ORDERED AND UNORDERED
-# Before Python 3.7 - dictionaries were unordered - which meant that you could initialize a dictionary with a specific order but if you iterate over it, the order of the key value pairs would be different
-# After Python 3.7 - dictionaries are now ordered - whatever ordered they are declared in - it will retain that order
-
+print(f"The following items are in your inventory: {my_set}")
