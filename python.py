@@ -1,41 +1,74 @@
-## SETS
-# Another data structure in Python a lot like sets
-# Sets can only hold 1 of each item - meaning all items in the set needs to be unique
-# We use sets to check if a value is in a set - deduplication - and really fast lookup
+## CHAPTER 12 - ERRORS
+# Syntax errors and exceptions
 
-my_set = {'Potion of Healing', '200 Gold', 'Bronze Sword'}
-my_set2 = {} # Python will treat this as an empty dictionary
-my_set3 = set() # Proper way to initialize an empty set
+player_inventory = []
 
-my_set.add('500 arrows') # adds the 500 arrows element into the my_set set
+print("Look I'm running!")
 
-print(f"The following items are in your inventory: {my_set}")
+first_item = player_inventory[0} # this is a syntax error - something about how we write the code is breaking the rules of the language
 
-# finding a value in a set is a lot faster & more efficient than finding a value in a list in Python
+# corrected but still wrong
+first_item = player_inventory[0] # this is a runtime logic error - empty list but we are trying to call the first item from the list
 
-# in a list - finding a value is slow because we have to look into every element individually to see if the element matches what we are looking for
-# in a set - finding a value is faster because Python puts the value through an equation and the result tells Python the address in memory already
+print(f"First Item: {first_item}")
 
-## Iterating over a set
+# Try and Except block
 
-for item in my_set:
-    print(f"Current item: {item}")
+try:
+    first_item = player_inventory[0]
+    print(f"First Item: {first_item}")
+except Exception as e:
+    print(f"There was an error getting the first item: {e}")
+
+print("Also made it this far!")
 
 ## Assignment
-# Complete the remove_duplicates function. It should take a list of spells that a player has learned and return a new List where there is at most one of each title. You can accomplish this by creating a set, adding all the spells to it, then iterating over the set and adding all the spells back into a list and returning the list.
-# It makes no sense to learn a spell twice! Once it's learned, it's learned forever.
+def main():
+    try:
+        print(get_player_record(1))
+        print(get_player_record(2))
+        print(get_player_record(3))
+        print(get_player_record(4))
+    except Exception as e:
+        print(f"The Error is {e}")
 
-def remove_duplicates(spells):
-    unique_spells = set(spells)
-    new_list = []
+## Raising your own Exceptions
+# we can use raise Exception to raise our own exceptions
 
-    for spell in unique_spells:
-        new_list.append(spell)
+def get_player_record(player_id):
+    if player_id == 1:
+        return {"name": "Slayer", "level": 128}
+    if player_id == 2:
+        return {"name": "Dorgoth", "level": 300}
+    if player_id == 3:
+        return {"name": "Saruman", "level": 4000}
+    else:
+        raise Exception('player id not found')
 
-    return new_list
+# Using try except block
 
-## Removing Items from a Set
+def shoot_arrow():
+    player_arrows = player_inventory[1]
+    total_arrows = player_arrows['arrow count']
 
-my_set.remove('200 Gold')
+    print("Shooting arrow...")
+    try:
+        total_arrows -= 1
+        print(f"Arrows remaining in the inventory: {total_arrows}")
+    except Exception as e:
+        print(e)
+    except TypeError:
+        print('Error: There are not enough arrows in the inventory')
 
-print(f"The following items are in your inventory: {my_set}")
+
+shoot_arrow()
+
+## ASSIGNMENT
+
+def handle_get_player_record(player_id):
+    try:
+        get_player_record(player_id)
+    except IndexError: 
+        return 'index is too high'
+    except Exception as e:
+        return e
