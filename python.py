@@ -1,169 +1,251 @@
-# ARRAYS IN PYTHON
-# An array is basically a data structure that can hold more than one value at a time - collection or ordered series of elements of the same type
-# Indexing starts at 0
-# Length of array = n, index of array is n - 1
-# Ordered series of elements - all elements are present in its particular address and is specified by its index value
+# LINKED LISTS
+# linear data structure that is an approach to data organization using a sequence of items called nodes
+# each node has a specific data value as well as a reference or pointer to the next node in the chain
 
-# IS PYTHON LIST THE SAME AS AN ARRAY
-# Python Arrays & Lists have the same way of storing data
-# Arrays can only take a single data type elements
-# Lists can have many types of data
+# LINKED LISTS VS LISTS
+# Regular lists use contiguous array in memory (slots are side by side) providing fast & simple access to elements through an index position
+# but because of this, there needs to be a block of continuous memory for the list - in the case of modifications, list resizing happens which affects performance
+# This only happens occassioanlly however as Python overallocates memory for lists for this reason
 
-# HOW TO CREATE ARRAYS IN PYTHON
-# Arrays in python can b4e created after importing the array module
+# Linked Lists use nodes linked with pointers making them unsuitable for random access
 
-# WITHOUT ALIAS
-import array
+# INDIVIDUAL NODES
+# single element in the linked list containing its own data and a reference to the next node in the sequence
 
-# USING ALIAS
-import array as arr
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None # reference to the next node in the chain, initialized as None until a link is established to another Node
 
-# USING *
-from array import * # imports all that is present in the array module
+head = Node(100) # head is the first node in the linked list
+second_node = Node(200) # the next node after the head
 
-a = array.array('i', [1, 2, 3, 4, 5, 6]) # creates an array of integer values
+head.next = second_node # making it so that the address pointer stored in the head points to the second node address
 
-import array as arr
-a = arr.array('i', [1, 2, 3, 4, 5, 6]) # creates an array of integer values
+# INITIALIZING AN EMPTY LIST
 
-from array import *
-a = array('i', [1, 2, 3, 4, 5, 6]) # creates an array of integer values
+class LinkedList:
+    def __init__(self):
+        self.head = None
 
-# ACCESSING ARRAY ELEMENTS
-# make use of index values
-# each index value holds a unique element
-# indexing starts at 0 - not from 1
-# negative indexing also exists - starts from right hand side to left hand side (a[-1] represents the last value)
-a[2] # outputs the 3rd element in the array
-a[-2] # outputs the 2nd to the last element in the array going from right to left
+    def append(self, value):
+        new_node = Node(value)
 
-# BASIC ARRAY OPERATIONS
-# ARRAYS ARE MUTABLE - WHICH MEANS THEY CAN BE MODIFIED
-# 1. Finding the length of an array
-# 2. Adding / Changing element of an array
-# 3. Removing / Deleting elements of an array
-# 4. Array Concatenation
-# 5. Slicing
-# 6. Looping through an array
+        # Set as head if empty list
+        if self.head is None:
+            self.head = new_node
+            return
 
-# FINDING THJE LENGTH OF AN ARRAY
-# len() - returns the number of elements present in the array
-import array as arr
-a = arr.array('d', [1.1, 2.1, 3.1])
-len(a) # this outputs 3
+        current = self.head
 
-# ADDING ELEMENTS TO AN ARRAY
-# append() - add an element to end of an array
-# extend() - add more than one elements to the end of the array
-# insert() - add an element to a specific position in the array
+        # Traverse linked list looking for the tail node
+        while current.next is not None:
+            current = current.next
 
-import array as arr
-a = arr.array('d', [1.1, 2.1, 3.1])
-a.append(3.4) # added to end of the array
-print("Array a=", a)
+        # Append new_node at the end of the list
+        current.next = new_node
 
-b = arr.array('d', [2.1, 3.2, 4.6])
-b.extend([4.5, 3.6, 7.2]) # added these elements to the end of the array
-print("Array b=", b)
+linked_list = LinkedList() # starts an empty linmked list
+print(linked_list.head)
+# Expected result is None
 
-c = arr.array('d', [1.1, 2.1, 3.1])
-c.insert(2, 3.4) # index position 2 - value inserted at the position is 3.4
-print("Array c=", c)
+# ADDING NEW NODES
+# create a method called append() to add nodes to the end of the linked list
+# accept a new value, create a new node, and add to the end of the list
 
-a = array('i', [1, 2, 3, 4, 5])
-a.append(8)
-print(a)
-a.append(1.2) # this outputs an error because the array is integer but we are trying to add a float value - arrays are not allowed to do this
-a.extend([9, 8, 6, 5, 6, 8, 9, 8, 6, 5, 4])
-print(a)
-a.insert(2, 6)
-print(a)
+linked_list.append(100)
+linked_list.append(200)
+linked_list.append(300)
 
-# REMOVING ELEMENTS FROM AN ARRAY
-# pop() - removes the element and returns it - removes last element by default
-# remove() - removes the element but does not return it
+# TRAVERSING THE LINKED LIST
+# the traverse() method prints each list value starting from the head and continually moving to the next node until it reaches the end of the list
 
-# EXAMPLE
-import array as arr
-a = arr.array('d', [1.1, 2.2, 3.8, 3.1, 3.7])
-print("Popping last element", a.pop()) # removes the last element and then returns it back to the array
-print("Popping 4th element", a.pop(3)) # removes the element at index position 3 and then returns it back to the array
-a.remove(1.1) # completely removes element 1.1 from the array
-print(a)
+def traverse(self):
+    current = self.head
 
-print(a.pop()) # removes last element present in the array
-print(a.pop(-2)) # pops 2nd to the last element in the array
-print(a.pop(2)) # pops element at index position 2
-print(a.pop(-1)) # pops last element in the array
-a.remove(8) # removes the element 8 from the array - remove() function needs specific element
+    while current is not None: # Continue through the tail node
+        print(current.data)
+        current = current.next
 
-# ARRAY CONCATENATION
-import array as arr
-a = arr.array('d', [1.1, 2.1, 3.1, 2.6, 7.8])
-b = arr.array('d', [3.7, 8.6])
-c = arr.array('d')
+linked_list.traverse()
 
-c = a + b # concatenates or adds the 2 arrays together and then stores it in the empty initialized array c
+# Expected result
+# 100
+# 200
+# 300
 
-print("Array c=", c)
+# SEARCHING FOR A NODE
+# search() method begins at the head of the list and compares each nodes value to the input - returning the first node where the data matches or None if it cannot find a value
 
-b = arr.array('i', [1, 2, 3, 4, 5, 6, 7])
-c = arr.array('i', [3, 5, 7, 5, 3, 2, 1])
-d = arr.array('i')
-d = b + c
-print(d)
+def search(self, value):
+    current = self.head
 
-e = arr.array('d', [3.1, 5.1, 7.1, 5.1, 3.1, 2.1, 1.1])
-d = b + e # this outputs an error because the types of both arrays are different and arrays need to have the same type
+    while current is not None:
+        if current.data == value:
+            return current
 
-# SLICING AN ARRAY
-# array can be sliced using the : symbol - returns a range of elements that we have specified using index numbers
-import array as arr
-a = arr.array('d', [1.1, 2.1, 3.1, 2.6, 7.8])
-print(a[0:3]) # this outputs the first index to the value at index position 2 - the last parameter is EXCLUSIVE
+        current = current.next
 
-d = arr.array('i', [1, 2, 3, 4, 5, 6, 7, 3, 4, 2, 1, 3, 5, 6, 7, 8])
-print(d[0:5]) # outputs elements from array d wherein the elements are from index position 0 to 4
-print(d[0:-2]) # outputs elements from array d wherein the elements are from index position 0 to 3rd to last element in the array
-print(d[::-1]) # outputs a reversed copy of the array
+    return None
 
-# LOOPING THROUGH AN ARRAY
-# we can loop through an array using for & while loops
-# for iterates over the items of an array specified number of times
-# while iterates over the elements until a certain condition is met - stopping the loop
+my_node = linked_list.search(200)
 
-# EXAMPLE
-import array as arr
-a = arr.array('d', [1.1, 2.2, 3.8, 3.1, 3.7])
-print("All values")
-for x in a:
-    print(x)
+print(my_node.data)
 
-d = arr.array('i', [1, 2, 3, 4, 5, 6, 7, 3, 4, 2, 1, 3, 5, 6, 7, 8])
+# Expected result:
+# 200
 
-for x in d:
-    print(x)
+# REMOVING NODES
+# this skips over the targett node and connects the previous node to the next node - eliminates the first node matching the input value and if no nodes match, it instead raises a ValueError
 
-for x in d[0:-3]: #outputs only the vcalues at index position 0 to index position 4th to the last element
-    print(x)
+def remove(self, value):
+    # Raise error if list is empty
+    if self.head is None:
+        raise ValueError(f"{value} not found in linked list")
 
-# While Loop implementation
-import array as arr
-a = arr.array('d', [1.1, 2.2, 3.8, 3.1, 3.7])
-b = 0
+    # Handle removing the head as a special case
+    if self.head.data == value:
+        self.head = self.head.next
+        return
 
-while b < len(a):
-    print(a[b])
-    b = b + 1
+    current = self.head
 
-temp = 0
-while temp < d[2]: # condition is that the value for iterator temp needs to be less than value at d[2]
-    print(d[temp])
-    temp = temp + 1
+    # Lookf or value, connect around it if found
+    while current.next is not None:
+        if current.next.data == value:
+            current.next = current.next.next
+            return
 
-temp = 0
-while temp < len(a): # runs through all elements in the array
-    print(a[temp])
-    temp = temp + 1
+        current = current.next # Move on if value doesn't match
 
-# An array is basically a data structure which can hold more than one value at a time
+    # Raise error if value not found
+    raise ValueError(f"{value} not found in linked list")
+
+linked_list.remove(200)
+linked_list.traverse()
+
+# Expected result:
+# 100
+# 300
+
+# DOUBLY LINKED LISTS
+# two references per node - the next node and the previous node is referenced in the current node
+# linked list can be progressed in a forward and backward direction
+
+# here is how Python class Node changes for a doubly linked list:
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None #  points to the previous node in the linked list, helping move through the list backwards
+        self.next = None
+
+head = Node(100)
+second = Node(200)
+
+head.next = second # the next pointed node for the head is the 2nd node
+second.prev = head # the previously pointed node for the second node is the head node
+
+# LinkedList class also changes - in addition to tracking the head, it now also has a tail reference serving as a starting point for backwrd traversal starting with the tail
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+
+# append() - set next for the old tail and prev for the new node at the tail
+# traverse() adds an option to follow the list forward or backward
+# search() adds an option to search starting from the front or back of the list
+# remove() update the next and prev references of the neighboring nodes
+
+# CIRCULAR LINKED LISTS
+# tail of the list points back to the head instead of pointing to None
+# can think of the linked list variation as a loop - can be singly or doubly linked as well
+
+# Node class follows the same structure as singly or doubly - just make sure that the tail node points backt o the head node of the linked list
+
+head = Node(100)
+second = Node(200)
+third = Node(300)
+
+head.next = second
+second.next = third
+third.next = head # tail points back to head, forming the circular linked list
+
+# LinkedList constructor stays the same but traversal changes because nthere is no None anymore - meaning stopping condition neds to be changed
+
+def traverse(self):
+    # Detect empty list
+    if self.head is None:
+        return
+
+    current = self.head
+
+    while True:
+        print(current.data)
+        current = current.next
+
+        # Stop when reaching head once more
+        if current == self.head:
+            break
+
+circular_linked_list = LinkedList()
+circular_linked_list.head = head
+
+circular_linked_list.traverse()
+# Expected resukt:
+# 100
+# 200
+# 300
+
+# append() should look for a node that points back to herad rather than pointing to none
+
+# INTERVIEW QUESTIONS
+# HOW DO YOU REVERSE A LINKED LIST?
+# make it so that the next address pointed to by a node is the one before or the previous node instead
+def reverse(self):
+    previous = None
+    current = self.head
+
+    while current is not None: # continue through tail node
+        next_node = current.next
+        current.next = previous # switch reference to previous
+        previous = current
+        current = next_node
+
+    self.head = previous
+
+# HOW DO YOU DETECT A CYCLE IN A LINKED LIST
+# the key to this question is Floy'd cycle detection algorithm
+# you can detect a cycle using two pointers, slow which advances only one node per iteration, and fast which advances two nodes per iteration
+# is fast reaches the end of the list, your linked list does not have a cycle but if both the slow and the fast eventually reference the same node, there is a cycle
+
+def has_cycle(self):
+    slow = self.head
+    fast = self.head
+
+    # Continue while fast can advance
+    while fast is not None and fast.next is not None:
+        slow = slow.next # Advance one node
+        fast = fast.next.next # Advance two nodes
+
+        # Cycle detected is slow and fast meet
+        if slow == fast:
+            return True
+
+    return False # no cycle if fast reaches the end of thbe list
+
+# HOW DO YOU FIND THE MIDDLE OF A LINKED LIST?
+# you can still leverage the same slow & fast pointers technique where slow advances one node per iteration, and fast advances two nodes per iteration,
+# when fast reaches end of the list, slow is already in the middle
+
+def find_middle(self):
+    slow = self.head
+    fast = self.head
+
+    while fast is not None and fast.next is not None:
+        slow = slow.next
+        fast = fast.next.next
+
+    # slow gives you the midpoint when fast reaches the end
+    return slow
+
