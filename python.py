@@ -1,230 +1,169 @@
-numbers = [2, 5, 8, 12, 13, 17, 20, 23, 26]
-target = 13
+# ARRAYS IN PYTHON
+# An array is basically a data structure that can hold more than one value at a time - collection or ordered series of elements of the same type
+# Indexing starts at 0
+# Length of array = n, index of array is n - 1
+# Ordered series of elements - all elements are present in its particular address and is specified by its index value
 
-# Step 1 - Algorithm will look at index position 4 and see if the value mathces the target which it does (13 for 13) - search stops and returns the index position of the matched value
+# IS PYTHON LIST THE SAME AS AN ARRAY
+# Python Arrays & Lists have the same way of storing data
+# Arrays can only take a single data type elements
+# Lists can have many types of data
 
-# What if target is 17?
+# HOW TO CREATE ARRAYS IN PYTHON
+# Arrays in python can b4e created after importing the array module
 
-target = 17
+# WITHOUT ALIAS
+import array
 
-# Step 1 - Algorithm will look at index position 4, determines it is not a match, then also determines that the target is greater than the middle value therefore look at right half and ignore left half
-# Step 2 - Now it looks at [17, 20, 23, 26] which is 0, 1, 2, 3, and will look at index position 1 which returns 20 which is still not the target, but determines that it is less than the middle value so new half to look at is just [17,]
-# Step 3 - Matches with only value in the last remaining half - returns index position which is 5
+# USING ALIAS
+import array as arr
 
-def binary_search_recursive(arr, target, left=0, right=None):
+# USING *
+from array import * # imports all that is present in the array module
 
-    if right is None:
-        right = len(arr) - 1
-    if left > right:
-        return - 1
-    mid = (left + right) // 2
-    if arr[mid] == target:
-        return mid
-    elif arr[mid] < target:
-        return binary_search_recursive(arr, target, mid + 1, right)
-    else:
-        return binary_search_recursive(arr, target, left, mid - 1)
+a = array.array('i', [1, 2, 3, 4, 5, 6]) # creates an array of integer values
 
-numbers = [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-result = binary_search_recursive(numbers, 8)
-print(f"Found at index: {result}") # Output: Found at index: 3
+import array as arr
+a = arr.array('i', [1, 2, 3, 4, 5, 6]) # creates an array of integer values
 
-# Iterative Binary Search (using a while loop)
+from array import *
+a = array('i', [1, 2, 3, 4, 5, 6]) # creates an array of integer values
 
-def binary_search_iterative(arr, target):
-    left = 0
-    right = len(arr) - 1
+# ACCESSING ARRAY ELEMENTS
+# make use of index values
+# each index value holds a unique element
+# indexing starts at 0 - not from 1
+# negative indexing also exists - starts from right hand side to left hand side (a[-1] represents the last value)
+a[2] # outputs the 3rd element in the array
+a[-2] # outputs the 2nd to the last element in the array going from right to left
 
-    while left <= right:
-        mid = (left + right) // 2
+# BASIC ARRAY OPERATIONS
+# ARRAYS ARE MUTABLE - WHICH MEANS THEY CAN BE MODIFIED
+# 1. Finding the length of an array
+# 2. Adding / Changing element of an array
+# 3. Removing / Deleting elements of an array
+# 4. Array Concatenation
+# 5. Slicing
+# 6. Looping through an array
 
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
+# FINDING THJE LENGTH OF AN ARRAY
+# len() - returns the number of elements present in the array
+import array as arr
+a = arr.array('d', [1.1, 2.1, 3.1])
+len(a) # this outputs 3
 
-    return -1
+# ADDING ELEMENTS TO AN ARRAY
+# append() - add an element to end of an array
+# extend() - add more than one elements to the end of the array
+# insert() - add an element to a specific position in the array
 
-numbers = [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
-result = binary_search_iterative(numbers, 13)
-print(f"Found at index: {result}") # Output: Found at index: 6
+import array as arr
+a = arr.array('d', [1.1, 2.1, 3.1])
+a.append(3.4) # added to end of the array
+print("Array a=", a)
 
-# Using Python's built-in bisect module
+b = arr.array('d', [2.1, 3.2, 4.6])
+b.extend([4.5, 3.6, 7.2]) # added these elements to the end of the array
+print("Array b=", b)
 
-import bisect
+c = arr.array('d', [1.1, 2.1, 3.1])
+c.insert(2, 3.4) # index position 2 - value inserted at the position is 3.4
+print("Array c=", c)
 
-numbers = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+a = array('i', [1, 2, 3, 4, 5])
+a.append(8)
+print(a)
+a.append(1.2) # this outputs an error because the array is integer but we are trying to add a float value - arrays are not allowed to do this
+a.extend([9, 8, 6, 5, 6, 8, 9, 8, 6, 5, 4])
+print(a)
+a.insert(2, 6)
+print(a)
 
-# Find the insertion point for your value
-pos = bisect.bisect_left(numbers, 40)
-print(f"Position: {pos}") # Output: Position: 3
+# REMOVING ELEMENTS FROM AN ARRAY
+# pop() - removes the element and returns it - removes last element by default
+# remove() - removes the element but does not return it
 
-# Check if the element exists
-target = 40
-pos = bisect.bisect_left(numbers, target)
-if pos < len(numbers) and numbers[pos] == target:
-    print(f"Found {target} at index {pos}")
-else:
-    print(f"{target} not found")
+# EXAMPLE
+import array as arr
+a = arr.array('d', [1.1, 2.2, 3.8, 3.1, 3.7])
+print("Popping last element", a.pop()) # removes the last element and then returns it back to the array
+print("Popping 4th element", a.pop(3)) # removes the element at index position 3 and then returns it back to the array
+a.remove(1.1) # completely removes element 1.1 from the array
+print(a)
 
-# Insert while maintaining sorted order
-bisect.insort(numbers, 41)
-print(numbers)
+print(a.pop()) # removes last element present in the array
+print(a.pop(-2)) # pops 2nd to the last element in the array
+print(a.pop(2)) # pops element at index position 2
+print(a.pop(-1)) # pops last element in the array
+a.remove(8) # removes the element 8 from the array - remove() function needs specific element
 
-import bisect
+# ARRAY CONCATENATION
+import array as arr
+a = arr.array('d', [1.1, 2.1, 3.1, 2.6, 7.8])
+b = arr.array('d', [3.7, 8.6])
+c = arr.array('d')
 
-# Streaming service movie library (sorted)
+c = a + b # concatenates or adds the 2 arrays together and then stores it in the empty initialized array c
 
-available_movies = ["Abbott elementarty", "Blackish", "Fast and furious", "Game of thrones"]
+print("Array c=", c)
 
-# Check if a movie is available
-movie_to_watch = "Moana"
-position = bisect.bisect_left(available_movies, movie_to_watch)
+b = arr.array('i', [1, 2, 3, 4, 5, 6, 7])
+c = arr.array('i', [3, 5, 7, 5, 3, 2, 1])
+d = arr.array('i')
+d = b + c
+print(d)
 
-if position < len(available_movies) and available_movies[position] == movie_to_watch:
-    print(f"'{movie_to_watch}' is available to stream")
-else:
-    print(f"'{movie_to_watch}' is not in the catalog")
+e = arr.array('d', [3.1, 5.1, 7.1, 5.1, 3.1, 2.1, 1.1])
+d = b + e # this outputs an error because the types of both arrays are different and arrays need to have the same type
 
-# Finding insertion positions in ordered data
+# SLICING AN ARRAY
+# array can be sliced using the : symbol - returns a range of elements that we have specified using index numbers
+import array as arr
+a = arr.array('d', [1.1, 2.1, 3.1, 2.6, 7.8])
+print(a[0:3]) # this outputs the first index to the value at index position 2 - the last parameter is EXCLUSIVE
 
-import bisect
-from datetime import datetime
+d = arr.array('i', [1, 2, 3, 4, 5, 6, 7, 3, 4, 2, 1, 3, 5, 6, 7, 8])
+print(d[0:5]) # outputs elements from array d wherein the elements are from index position 0 to 4
+print(d[0:-2]) # outputs elements from array d wherein the elements are from index position 0 to 3rd to last element in the array
+print(d[::-1]) # outputs a reversed copy of the array
 
-# Events sorted by start time
-event_times = [
-    datetime(2026, 2, 5, 9, 0), # 9:00 AM
-    datetime(2026, 2, 5, 10, 30), # 10:30 AM
-    datetime(2026, 2, 5, 14, 0) # 2:00 PM
-    datetime(2026, 2, 5, 16, 30) # 4:30 PM
-]
+# LOOPING THROUGH AN ARRAY
+# we can loop through an array using for & while loops
+# for iterates over the items of an array specified number of times
+# while iterates over the elements until a certain condition is met - stopping the loop
 
-# Add a new meeting at 12:00 PM
-new_meeting = datetime(2026, 2, 5, 12, 0)
-position = bisect.bisect_left(event_times, new_meeting)
-event_times.insert(position, new_meeting)
+# EXAMPLE
+import array as arr
+a = arr.array('d', [1.1, 2.2, 3.8, 3.1, 3.7])
+print("All values")
+for x in a:
+    print(x)
 
-print(f"Meeting inserted at position {position}")
-print(f"Total events: {len(event_times)}")
+d = arr.array('i', [1, 2, 3, 4, 5, 6, 7, 3, 4, 2, 1, 3, 5, 6, 7, 8])
 
-# Searching logs, IDs, or timestamps
+for x in d:
+    print(x)
 
-import bisect
+for x in d[0:-3]: #outputs only the vcalues at index position 0 to index position 4th to the last element
+    print(x)
 
-# User IDs from sorted database query
-user_ids = [1001, 1045, 1089, 1123, 1167, 1201, 1245, 1289, 1334, 1378]
+# While Loop implementation
+import array as arr
+a = arr.array('d', [1.1, 2.2, 3.8, 3.1, 3.7])
+b = 0
 
-# Find user with ID 1200
-target_id = 1200
-pos = bisect.bisect_left(user_ids, target_id)
+while b < len(a):
+    print(a[b])
+    b = b + 1
 
-if pos < len(user_ids) and user_ids[pos] == target.id:
-    print(f"User {target_id} found at index {pos}")
-else:
-    if pos < len(user_ids):
-        print(f"User {target_id} not found. Next highest ID is {user_ids[pos]} at index")
-    else:
-        print(f"User {target_id} not found. This ID is higher than every ID in the database")
+temp = 0
+while temp < d[2]: # condition is that the value for iterator temp needs to be less than value at d[2]
+    print(d[temp])
+    temp = temp + 1
 
-# Errror: wrong answer
-unsorted_list = [20, 30, 25, 10, 5, 15]
-result = binary_search_iterative(unsorted_list, 5)
+temp = 0
+while temp < len(a): # runs through all elements in the array
+    print(a[temp])
+    temp = temp + 1
 
-# Best5 practice: correct answer
-
-# Method 1: Using sorted()
-unsorted_list = [20, 30, 25, 10, 5, 15]
-sorted_list = sorted(unsorted_list)
-result = binary_search_iterative(sorted_list, 5)
-print(unsorted_list) # Still [20, 30, 25, 10, 5, 15]
-print(sorted_list) # Now [5, 10, 15, 20, 25, 30]
-
-# Method 2: Using .sort()
-unsorted_list = [20, 30, 25, 10, 5, 15]
-unsorted_list.sort()
-result = binary_search_iterative(unsorted_list, 5)
-print(unsorted_list) # Now [5, 10, 15, 20, 25, 30]
-
-# ERROR : binary search on a list with duplicate values
-def standard_search(arr, target):
-    lefgt, right = 0, len(arr) - 1
-
-    while left <= right:
-        mid = left + (right - left) // 2
-        if arr[mid] == target:
-            return mid # Returns any occurence - unpredictable!
-        elif arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
-
-    return -1
-
-arr = [1, 2, 2, 2, 2, 3, 4]
-result = standard_search(arr, 2)
-print(f"Found at index: {result}") # Might return 1, 2, 3, or 4 - unpredictable!
-
-# BEST PRACTICE: Using bisect
-import bisect
-
-# Find first occurence using bisect_left
-first = bisect.bisect_left(arr, 2)
-print(f"First occurence of 2: index {first}") # Always returns index 1
-
-# Find last occurence using bisect_right
-last = bisect.bisect_right(arr, 2) - 1
-print(f"Last occurence of 2: index {last}") # Always returns index 4
-
-# Write your own first occurence search
-def find_first(arr, target):
-    left, right = 0, len(arr) - 1
-    result = -1
-
-    while left <= right:
-        mid = left + (right - left) // 2
-        if arr[mid] == target:
-            result = mid
-            right = mid - 1 # Keep searching left half for earlier occurence
-        elif arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
-
-    return result
-
-# Wrtie your own last occurence search
-def find_last(arr, target):
-    left, right = 0, len(arr) - 1
-    result = -1
-
-    while left <= right:
-        mid = left + (right - left) // 2
-        if arr[mid] == target:
-            result = mid
-            left = mid + 1 # Keep searchiong right half for later occurence
-        elif arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
-    
-    return result
-
-print(f"First occurence: {find_first(arr, 2)}") # Always returns 1
-print(f"Last occurence: {find_last(arr, 2)}") # Always returns 4
-
-# Code with errors
-def buggy_binary_search(arr, target):
-    left, right = 0, len(arr) - 1
-
-    while left < right: # error 1: Should be left <= right
-        mid = (left + right) // 2
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            left = mid # error 2: Should be mid + 1
-        else:
-            right = mid # error 3: Should be mid - 1
-
-    return -1
+# An array is basically a data structure which can hold more than one value at a time
