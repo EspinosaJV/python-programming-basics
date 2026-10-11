@@ -1,251 +1,86 @@
-# LINKED LISTS
-# linear data structure that is an approach to data organization using a sequence of items called nodes
-# each node has a specific data value as well as a reference or pointer to the next node in the chain
-
-# LINKED LISTS VS LISTS
-# Regular lists use contiguous array in memory (slots are side by side) providing fast & simple access to elements through an index position
-# but because of this, there needs to be a block of continuous memory for the list - in the case of modifications, list resizing happens which affects performance
-# This only happens occassioanlly however as Python overallocates memory for lists for this reason
-
-# Linked Lists use nodes linked with pointers making them unsuitable for random access
-
-# INDIVIDUAL NODES
-# single element in the linked list containing its own data and a reference to the next node in the sequence
-
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None # reference to the next node in the chain, initialized as None until a link is established to another Node
-
-head = Node(100) # head is the first node in the linked list
-second_node = Node(200) # the next node after the head
-
-head.next = second_node # making it so that the address pointer stored in the head points to the second node address
-
-# INITIALIZING AN EMPTY LIST
-
-class LinkedList:
-    def __init__(self):
-        self.head = None
-
-    def append(self, value):
-        new_node = Node(value)
-
-        # Set as head if empty list
-        if self.head is None:
-            self.head = new_node
-            return
-
-        current = self.head
-
-        # Traverse linked list looking for the tail node
-        while current.next is not None:
-            current = current.next
-
-        # Append new_node at the end of the list
-        current.next = new_node
-
-linked_list = LinkedList() # starts an empty linmked list
-print(linked_list.head)
-# Expected result is None
-
-# ADDING NEW NODES
-# create a method called append() to add nodes to the end of the linked list
-# accept a new value, create a new node, and add to the end of the list
-
-linked_list.append(100)
-linked_list.append(200)
-linked_list.append(300)
-
-# TRAVERSING THE LINKED LIST
-# the traverse() method prints each list value starting from the head and continually moving to the next node until it reaches the end of the list
-
-def traverse(self):
-    current = self.head
-
-    while current is not None: # Continue through the tail node
-        print(current.data)
-        current = current.next
-
-linked_list.traverse()
-
-# Expected result
-# 100
-# 200
-# 300
-
-# SEARCHING FOR A NODE
-# search() method begins at the head of the list and compares each nodes value to the input - returning the first node where the data matches or None if it cannot find a value
-
-def search(self, value):
-    current = self.head
-
-    while current is not None:
-        if current.data == value:
-            return current
-
-        current = current.next
-
-    return None
-
-my_node = linked_list.search(200)
-
-print(my_node.data)
-
-# Expected result:
-# 200
-
-# REMOVING NODES
-# this skips over the targett node and connects the previous node to the next node - eliminates the first node matching the input value and if no nodes match, it instead raises a ValueError
-
-def remove(self, value):
-    # Raise error if list is empty
-    if self.head is None:
-        raise ValueError(f"{value} not found in linked list")
-
-    # Handle removing the head as a special case
-    if self.head.data == value:
-        self.head = self.head.next
-        return
-
-    current = self.head
-
-    # Lookf or value, connect around it if found
-    while current.next is not None:
-        if current.next.data == value:
-            current.next = current.next.next
-            return
-
-        current = current.next # Move on if value doesn't match
-
-    # Raise error if value not found
-    raise ValueError(f"{value} not found in linked list")
-
-linked_list.remove(200)
-linked_list.traverse()
-
-# Expected result:
-# 100
-# 300
-
-# DOUBLY LINKED LISTS
-# two references per node - the next node and the previous node is referenced in the current node
-# linked list can be progressed in a forward and backward direction
-
-# here is how Python class Node changes for a doubly linked list:
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.prev = None #  points to the previous node in the linked list, helping move through the list backwards
-        self.next = None
-
-head = Node(100)
-second = Node(200)
-
-head.next = second # the next pointed node for the head is the 2nd node
-second.prev = head # the previously pointed node for the second node is the head node
-
-# LinkedList class also changes - in addition to tracking the head, it now also has a tail reference serving as a starting point for backwrd traversal starting with the tail
-
-class LinkedList:
-    def __init__(self):
-        self.head = None
-        self.tail = None
-
-# append() - set next for the old tail and prev for the new node at the tail
-# traverse() adds an option to follow the list forward or backward
-# search() adds an option to search starting from the front or back of the list
-# remove() update the next and prev references of the neighboring nodes
-
-# CIRCULAR LINKED LISTS
-# tail of the list points back to the head instead of pointing to None
-# can think of the linked list variation as a loop - can be singly or doubly linked as well
-
-# Node class follows the same structure as singly or doubly - just make sure that the tail node points backt o the head node of the linked list
-
-head = Node(100)
-second = Node(200)
-third = Node(300)
-
-head.next = second
-second.next = third
-third.next = head # tail points back to head, forming the circular linked list
-
-# LinkedList constructor stays the same but traversal changes because nthere is no None anymore - meaning stopping condition neds to be changed
-
-def traverse(self):
-    # Detect empty list
-    if self.head is None:
-        return
-
-    current = self.head
-
-    while True:
-        print(current.data)
-        current = current.next
-
-        # Stop when reaching head once more
-        if current == self.head:
-            break
-
-circular_linked_list = LinkedList()
-circular_linked_list.head = head
-
-circular_linked_list.traverse()
-# Expected resukt:
-# 100
-# 200
-# 300
-
-# append() should look for a node that points back to herad rather than pointing to none
-
-# INTERVIEW QUESTIONS
-# HOW DO YOU REVERSE A LINKED LIST?
-# make it so that the next address pointed to by a node is the one before or the previous node instead
-def reverse(self):
-    previous = None
-    current = self.head
-
-    while current is not None: # continue through tail node
-        next_node = current.next
-        current.next = previous # switch reference to previous
-        previous = current
-        current = next_node
-
-    self.head = previous
-
-# HOW DO YOU DETECT A CYCLE IN A LINKED LIST
-# the key to this question is Floy'd cycle detection algorithm
-# you can detect a cycle using two pointers, slow which advances only one node per iteration, and fast which advances two nodes per iteration
-# is fast reaches the end of the list, your linked list does not have a cycle but if both the slow and the fast eventually reference the same node, there is a cycle
-
-def has_cycle(self):
-    slow = self.head
-    fast = self.head
-
-    # Continue while fast can advance
-    while fast is not None and fast.next is not None:
-        slow = slow.next # Advance one node
-        fast = fast.next.next # Advance two nodes
-
-        # Cycle detected is slow and fast meet
-        if slow == fast:
-            return True
-
-    return False # no cycle if fast reaches the end of thbe list
-
-# HOW DO YOU FIND THE MIDDLE OF A LINKED LIST?
-# you can still leverage the same slow & fast pointers technique where slow advances one node per iteration, and fast advances two nodes per iteration,
-# when fast reaches end of the list, slow is already in the middle
-
-def find_middle(self):
-    slow = self.head
-    fast = self.head
-
-    while fast is not None and fast.next is not None:
-        slow = slow.next
-        fast = fast.next.next
-
-    # slow gives you the midpoint when fast reaches the end
-    return slow
+# HASH TABKE
+# a dictionary is an abstract data type made up of keys and values arranged in pairs (add a key value pair, delete a key value pair, update a key value pair, find a value associated with the given key)
+# dictionaries are also known as maps or associative arrays - you're mapping or associating a value to a key
+# dictionaries need to have key-value pairs where a key is mapped to a value and vice versa
+# dictionaries can have arbitrary keys and values where these can belong to two disjoint sets of the same or separate types
+# dictionaries have unordered key-value pairs
+# dictionaries can only have unique keys and cannot contain duplicate keys
+# in dictionaries, the same value can be associated with many keys but it doesn't have to.
+
+# EXAMPLE
+glossary = {"BDFL": "Benevolent Dictator for Life"}
+glossary["GIL"] = "Global Interpreter Lock" # Add
+glossary["BDFL"] = "Guido Van Rossum" # Update
+del glossary["GIL"] # Delete
+glossary["BDFL"] # Search
+print(glossary)
+
+# HASH TABLE IOS AN ARRAY WITH A HASH FUNCTION
+
+import string
+text = string.ascii_uppercase * 100_000_000
+
+text[:50] # Show the first 50 characters
+# outputs the firsst 50 characters
+
+print(len(text)) # prints the length of the text itself
+print(text[0]) # the first element
+print(text[len(text) // 2]) # the middle element
+print(text[-1]) # the last element
+
+# sequences in Python are backed by an array which is a random-access data structure - follows 2 principles
+# The array occupies a contiguous block of memory
+# Every element in the array has a fixed size known up front
+
+# formula is element_address = offset + (element_size x element_index)
+# this is the formula to calculate the memory address of a sequence element
+
+# hashing is the process of translating an arbitrary key into an integer number that can work as an index in a regular array
+# hash function performs hashing by turning any data into a fixed size sequence of bytes called the hash value or the hash code - acts as a digital fingerprint or a digest that is much smaller than the original data - verifying its integrity
+# hash functions also help in security and crptography
+# crptographic hash function is another type of hash function that must meet a few additional requirements 
+
+hash(3.14)
+hash(3.1415179)
+hash("Lorem")
+
+# the hash function always returns the same hash value for a given input, so if you were to hash lorem multipel times - the output of the hashf unction is always the same
+# hash values are immutable and do not change throughout an object's lifetime
+# the hash function in Python is deterministic - one of the most fundamental features of the hash function
+# the hash function takes values of various types and sizes
+# When it comes to Python, instances of built-in mutable types like lists, sets, and dicts - are NOT hashable'
+# Most data types however should work with a hash function in general
+# The hash function always produces a fixed size output no matter how big the input is
+# Pigeonhole principle - if m represents the number of items whereas n represents the number of containers, if there are more items than containers then there is bound to be an event where a container can contain more than one item
+
+# hash_distribution.py sample code
+from collections import Counter
+
+def distribute(items, num_containers, hash_function = hash):
+    return Counter([hash_function(item) % num_containers for item in items])
+
+def plot(histogram):
+    for key in sorted(histogram):
+        count = histogram[key]
+        padding = (max(histogram.values()) - count) * " "
+        print(f"{key:3} {'x' * count}{padding} ({count})")
+
+
+# the uniform distribution of hash values is typically pseudo-random - especially important for cryptographic hash functions
+    # this prevents potential attackers from using statistical analysis to try & predict correlation between input and output of hash function
+
+# CPython - when hash values of small integers are hashed - they are equal to themselves which is implemented for simplicity and efficiency
+# Hash value calculation is very fast even if the size of the input is very big 
+    # For example, calling the hash() on a string with 100 million characters still returns instantaneously
+
+# A regular hash function is deterministic with a universal input, fixed size output, fast to compute, and uniformly distributed
+# A cryptographic hash function not only provides the features of a regular hash function but is also randomly distributed, randomized seed, a one way function that also implements the avalanche effect (a small input change can still amplify the hash value output)
+
+# when you use the id() call on a value, it tells you the object's identity which is basically the same as the object's memory address expressed as an integer
+
+def hash_function(text):
+    return sum(ord(character) for character in text)
+
+def hash_function(key):
+    return sum(ord(character) for character in str(key))
 
