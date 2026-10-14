@@ -1,86 +1,61 @@
-# HASH TABKE
-# a dictionary is an abstract data type made up of keys and values arranged in pairs (add a key value pair, delete a key value pair, update a key value pair, find a value associated with the given key)
-# dictionaries are also known as maps or associative arrays - you're mapping or associating a value to a key
-# dictionaries need to have key-value pairs where a key is mapped to a value and vice versa
-# dictionaries can have arbitrary keys and values where these can belong to two disjoint sets of the same or separate types
-# dictionaries have unordered key-value pairs
-# dictionaries can only have unique keys and cannot contain duplicate keys
-# in dictionaries, the same value can be associated with many keys but it doesn't have to.
+# HEAP
+# tree-based data structure in which the value of a parent node is ordered in a certain way in respect to the value of its child node, if its a min heap - the value of the parent node is less than or equal to the value of its children, whereas for max heap the value of the parent node is greater than or equal to the value of its children
 
-# EXAMPLE
-glossary = {"BDFL": "Benevolent Dictator for Life"}
-glossary["GIL"] = "Global Interpreter Lock" # Add
-glossary["BDFL"] = "Guido Van Rossum" # Update
-del glossary["GIL"] # Delete
-glossary["BDFL"] # Search
-print(glossary)
+# STACK
+# operations are performed LIFO (last in first out) - last element in is the first one removed, stack can also be implemented using an array or a linked list - if a stack runs out of memory, it is called a stack overflow
 
-# HASH TABLE IOS AN ARRAY WITH A HASH FUNCTION
+# QUEUE
+# operations are performed in FIFO (first in first out) - queue can be implemented using an array
 
-import string
-text = string.ascii_uppercase * 100_000_000
+# WHAT ARE HEAPS
+# min heap is for storing objects with a partial order - fast method for removing the minimum object from the heap and are useful for calculations where you have multiple minimum computations to perform
+# heaps can only be either min heap or max heap
+# heaps are known also as priority queues and are technically one implementation of priority queues
 
-text[:50] # Show the first 50 characters
-# outputs the firsst 50 characters
+# In heaps, keys are the values that determine the order - if storing numbers these can be the keys and if storing more complicated objects, key is the data field we are comparing by, keys in heaps do not have to be unique
+# extract_min is the method of quickly being able to extract the minimum element from the min heap
 
-print(len(text)) # prints the length of the text itself
-print(text[0]) # the first element
-print(text[len(text) // 2]) # the middle element
-print(text[-1]) # the last element
+# min heap is able to quickly extract the minimum value in a heap and repeated extractions from a min heap into an array can result into a sorted array
 
-# sequences in Python are backed by an array which is a random-access data structure - follows 2 principles
-# The array occupies a contiguous block of memory
-# Every element in the array has a fixed size known up front
+# its weakness however is that there is no convenient way of searching for a particular key value ikn a heap
 
-# formula is element_address = offset + (element_size x element_index)
-# this is the formula to calculate the memory address of a sequence element
+# HEAPS ARE FOR MINIMUM OR MAXIMUM EXTRACTIONS 
+    # - Finding the minimum distance between 2 nodes in a graph
+    # - Getting the next event that is scheduled to occur
+    # - Keep track of the median value while streaming
+    # - Find the first k non-repeating characters in a string in a single traversal
 
-# hashing is the process of translating an arbitrary key into an integer number that can work as an index in a regular array
-# hash function performs hashing by turning any data into a fixed size sequence of bytes called the hash value or the hash code - acts as a digital fingerprint or a digest that is much smaller than the original data - verifying its integrity
-# hash functions also help in security and crptography
-# crptographic hash function is another type of hash function that must meet a few additional requirements 
+# COMMON HEAP OPERATIONS
+# insert(key) operation - inserts key into a heap and can modify to have a key / value pair, time complexity is O(log n) and can mutate the structure
+# extract_min() - returns and removes item with minimum key from the heap, time complexity is O(log n) and can also mutate the structure
+# peek_min() - can view the minimum key but does not remove it from the heap, time complexity is O(1) and does not mutate the structure
+# heapify(list) - creates a new heap from a list of n items - functionally equivalent to starting with an empty heap and inserting elements one at a time - has a better run time than the O(n log n) of this approach - time complexity is O(n) and it creates a new heap
 
-hash(3.14)
-hash(3.1415179)
-hash("Lorem")
+# STACKS & QUEUES
+# both designed to hold elements and return in a specific order - only difference is the order in which items are retrieved
 
-# the hash function always returns the same hash value for a given input, so if you were to hash lorem multipel times - the output of the hashf unction is always the same
-# hash values are immutable and do not change throughout an object's lifetime
-# the hash function in Python is deterministic - one of the most fundamental features of the hash function
-# the hash function takes values of various types and sizes
-# When it comes to Python, instances of built-in mutable types like lists, sets, and dicts - are NOT hashable'
-# Most data types however should work with a hash function in general
-# The hash function always produces a fixed size output no matter how big the input is
-# Pigeonhole principle - if m represents the number of items whereas n represents the number of containers, if there are more items than containers then there is bound to be an event where a container can contain more than one item
+# STACKS ARE FIRST IN, LAST OUT AND LAST IN, FIRST OUT
+# QUEUES ARE FIRST IN, FIRST OUT
 
-# hash_distribution.py sample code
-from collections import Counter
+# BOTH ARE ABSTRACT DATA TYPES - guaranteed to be able to put elements in and remove them in the specified order
 
-def distribute(items, num_containers, hash_function = hash):
-    return Counter([hash_function(item) % num_containers for item in items])
+# BOTH HAVE AN ADD OPERATION (push / enqueue) and a remove operation (pop / dequeue)
 
-def plot(histogram):
-    for key in sorted(histogram):
-        count = histogram[key]
-        padding = (max(histogram.values()) - count) * " "
-        print(f"{key:3} {'x' * count}{padding} ({count})")
+# push is adding object to top of stack
+# pop is removing object from top of stack
+# enqueue is adding object to the back of the queue
+# dequeue is removing object from the front of the queue
 
+# COMMON OPERATIONS CHEAT SHEET
+# push(item) - pushes item on the top of the stack, time complexity of O(1) and mutates the structure
+# pop() - removes the most recently added item from the stack with a time complexity of O(1) and also mutates the structure
+# peek() - accesses the most recently added item in the stack without removing it - O(1) time complexity and does not mutate the structure
+# isEmpty() - returns True if there are no items in the stack, False otherwise, time complexity of O(1) and does not mutate the structure
 
-# the uniform distribution of hash values is typically pseudo-random - especially important for cryptographic hash functions
-    # this prevents potential attackers from using statistical analysis to try & predict correlation between input and output of hash function
+# COMMON OPERATIONS BUT FOR QUEUES CHEAT SHEET
+# enqueue(item) - puts item at the end of the queue
+# dequeue() - removes the item at the front of the queue which mutates the structure of the dict
+# peek() - accesses the item at the front of the queue without removing it - does not mutate the structure of the dict
+# isEmpty() - returns true if no item in the queue, false otherwise - does not mutate the structure
 
-# CPython - when hash values of small integers are hashed - they are equal to themselves which is implemented for simplicity and efficiency
-# Hash value calculation is very fast even if the size of the input is very big 
-    # For example, calling the hash() on a string with 100 million characters still returns instantaneously
-
-# A regular hash function is deterministic with a universal input, fixed size output, fast to compute, and uniformly distributed
-# A cryptographic hash function not only provides the features of a regular hash function but is also randomly distributed, randomized seed, a one way function that also implements the avalanche effect (a small input change can still amplify the hash value output)
-
-# when you use the id() call on a value, it tells you the object's identity which is basically the same as the object's memory address expressed as an integer
-
-def hash_function(text):
-    return sum(ord(character) for character in text)
-
-def hash_function(key):
-    return sum(ord(character) for character in str(key))
-
+# all of the common operations for queue have a time complexity of O(1)
